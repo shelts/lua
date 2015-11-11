@@ -7,7 +7,7 @@ prng = DSFMT.create(argSeed)
 
 evolveTime       = tonumber(arg[1])
 reverseOrbitTime = arg[1] / tonumber(arg[2])
-
+print(reverseOrbitTime)
 r0  = tonumber(arg[3])
 light_r_ratio = tonumber(arg[4])
 
@@ -18,13 +18,13 @@ model1Bodies = 2000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
-nbodyMinVersion = "1.52"
+nbodyMinVersion = "1.54"
 
 
-rscale_l = r0
 rscale_d = r0 / light_r_ratio
-mass_l   = dwarfMass * light_mass_ratio
+rscale_l = r0
 mass_d   = dwarfMass * (1.0 - light_mass_ratio)
+mass_l   = dwarfMass * light_mass_ratio
 
 function makePotential()
    return  Potential.create{
@@ -75,7 +75,7 @@ function makeBodies(ctx, potential)
   local firstModel
   local finalPosition, finalVelocity = reverseOrbit{
       potential = potential,
-      position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 35)),
+      position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
       velocity  = Vector.create(-156, 79, 107),
       tstop     = reverseOrbitTime,
       dt        = ctx.timestep / 10.0
@@ -101,12 +101,12 @@ function makeHistogram()
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -100,
-     lambdaEnd = 100,
-     lambdaBins = 50,
-     betaStart = -100,
-     betaEnd = 100,
-     betaBins = 1
+     lambdaStart = -180,
+     lambdaEnd = 180,
+     lambdaBins = 100,
+     betaStart = -180,
+     betaEnd = 180,
+     betaBins = 100
 }
 end
 

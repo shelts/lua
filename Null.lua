@@ -16,15 +16,13 @@ light_r_ratio = arg[4]
 dwarfMass  = arg[5]
 light_mass_ratio = arg[6]
 
-model1Bodies = 2000
+model1Bodies = 20000
 
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.50"
 
--- 3.23e-4timestep
--- 2.25e-6soften
 
 -- rscale_d = r0 / light_r_ratio
 -- rscale_l = r0 
@@ -66,11 +64,8 @@ function get_timestep()
 end
 
 
-
-
-
 function makeContext()
-   soften_length = (mass_l*rscale_l + mass_d*rscale_d)/(mass_d+mass_l)
+   soften_length = (mass_l * rscale_l + mass_d * rscale_d) / (mass_d + mass_l)
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),
