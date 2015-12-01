@@ -6,15 +6,13 @@ assert(argSeed ~= nil, "Expected seed")
 prng = DSFMT.create(argSeed)
 
 evolveTime       = tonumber(arg[1])
-reverseOrbitTime = arg[1] / tonumber(arg[2])
-print(reverseOrbitTime)
-r0  = tonumber(arg[3])
-light_r_ratio = tonumber(arg[4])
-
-dwarfMass  = tonumber(arg[5])
+reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
+r0               = tonumber(arg[3])
+light_r_ratio    = tonumber(arg[4])
+dwarfMass        = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
 
-model1Bodies = 2000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -26,6 +24,8 @@ rscale_l = r0
 mass_d   = dwarfMass * (1.0 - light_mass_ratio)
 mass_l   = dwarfMass * light_mass_ratio
 
+print(evolveTime)
+print(mass_d, mass_l)
 function makePotential()
    return  Potential.create{
       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
@@ -98,15 +98,16 @@ end
 
 function makeHistogram()
     return HistogramParams.create{
+     --Orphan Stream coordinate transformation angles
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -180,
-     lambdaEnd = 180,
-     lambdaBins = 100,
-     betaStart = -180,
-     betaEnd = 180,
-     betaBins = 100
+     lambdaStart = -150,
+     lambdaEnd = 150,
+     lambdaBins = 50,
+     betaStart = -40,
+     betaEnd = 40,
+     betaBins = 50
 }
 end
 

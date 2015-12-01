@@ -5,17 +5,13 @@ assert(argSeed ~= nil, "Expected seed")
 
 prng = DSFMT.create(argSeed)
 print('seed=', argSeed)
-evolveTime       = arg[1]
-reverseOrbitTime = arg[1] / tonumber(arg[2])
-
+evolveTime       = tonumber(arg[1])
+reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
+r0               = tonumber(arg[3])
+light_r_ratio    = tonumber(arg[4])
+dwarfMass        = tonumber(arg[5])
+light_mass_ratio = tonumber(arg[6])
 print(evolveTime)
-
-r0  = arg[3]
-light_r_ratio = arg[4]
-
-dwarfMass  = arg[5]
-light_mass_ratio = arg[6]
-
 model1Bodies = 20000
 
 totalBodies = model1Bodies
@@ -24,15 +20,15 @@ nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.50"
 
 
--- rscale_d = r0 / light_r_ratio
--- rscale_l = r0 
--- mass_d   = dwarfMass * (1.0 - light_mass_ratio)
--- mass_l   = dwarfMass * light_mass_ratio 
-
 rscale_d = r0 / light_r_ratio
-rscale_l = 1.0
-mass_d   = 0.0 --dwarfMass * (1.0 - light_mass_ratio)
-mass_l   = 30
+rscale_l = r0 
+mass_d   = dwarfMass * (1.0 - light_mass_ratio)
+mass_l   = dwarfMass * light_mass_ratio 
+print(mass_d, mass_l)
+-- rscale_d = r0 / light_r_ratio
+-- rscale_l = 1.0
+-- mass_d   = 0.0 --dwarfMass * (1.0 - light_mass_ratio)
+-- mass_l   = 30
 
 
 
