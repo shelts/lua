@@ -20,16 +20,17 @@ nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.50"
 
 
-rscale_d = r0 / light_r_ratio
-rscale_l = r0 
-mass_d   = dwarfMass * (1.0 - light_mass_ratio)
-mass_l   = dwarfMass * light_mass_ratio 
-print(mass_d, mass_l)
 -- rscale_d = r0 / light_r_ratio
--- rscale_l = 1.0
--- mass_d   = 0.0 --dwarfMass * (1.0 - light_mass_ratio)
--- mass_l   = 30
+-- rscale_l = r0 
+-- mass_d   = dwarfMass * (1.0 - light_mass_ratio)
+-- mass_l   = dwarfMass * light_mass_ratio
+-- print(mass_d, mass_l)
 
+rscale_d = r0 / light_r_ratio
+rscale_l = 1.0
+mass_d   = 0.0 --dwarfMass * (1.0 - light_mass_ratio)
+mass_l   = 30
+print(mass_d, mass_l)
 
 
 function makePotential()
