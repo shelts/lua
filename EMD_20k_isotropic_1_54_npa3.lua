@@ -8,7 +8,7 @@ prng = DSFMT.create(argSeed)
 
 evolveTime       = tonumber(arg[1])
 reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
-r0               = tonumber(arg[3])
+rscale_l         = tonumber(arg[3])
 light_r_ratio    = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
@@ -20,9 +20,9 @@ nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.54"
 
 dwarfMass = mass_l / light_mass_ratio
+rscale_t = rscale_l / light_r_ratio
 
-rscale_d = r0 / light_r_ratio
-rscale_l = r0
+rscale_d = rscale_t *  (1.0 - light_r_ratio)
 mass_d   = dwarfMass * (1.0 - light_mass_ratio)
 
 -- print(evolveTime)
