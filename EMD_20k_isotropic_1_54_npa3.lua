@@ -20,7 +20,7 @@ nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.54"
 
 dwarfMass = mass_l / light_mass_ratio
-rscale_t = rscale_l / light_r_ratio
+rscale_t  = rscale_l / light_r_ratio
 
 rscale_d = rscale_t *  (1.0 - light_r_ratio)
 mass_d   = dwarfMass * (1.0 - light_mass_ratio)
