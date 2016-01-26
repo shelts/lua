@@ -19,6 +19,7 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.54"
 
+-- mass ratio is now defined as mr=ml/md. fitting ml directly. other parameters the same
 mass_d   = mass_l / light_mass_ratio
 rscale_d = rscale_l / light_r_ratio
 

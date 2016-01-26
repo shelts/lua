@@ -19,13 +19,14 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.54"
 
+--fitting ml directly. mass ratio as originally defined
+--radius ratio now defined the way mass ratio is.
 dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
+rscale_d  = rscale_t *  (1.0 - light_r_ratio)
+mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-rscale_d = rscale_t *  (1.0 - light_r_ratio)
-mass_d   = dwarfMass * (1.0 - light_mass_ratio)
-
--- print(evolveTime)
+print(evolveTime)
 -- print(mass_d, mass_l)
 function makePotential()
    return  Potential.create{
@@ -59,7 +60,7 @@ end
 
 
 function makeContext()
-   soften_length = (mass_l*rscale_l + mass_d*rscale_d)/(mass_d+mass_l)
+   soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),

@@ -19,8 +19,8 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.54"
 
+-- fitting ml directly. Other parameters defined the same way
 dwarfMass = mass_l / light_mass_ratio
-
 rscale_d = r0 / light_r_ratio
 rscale_l = r0
 mass_d   = dwarfMass * (1.0 - light_mass_ratio)
