@@ -2,9 +2,10 @@ arg = { ... }
 
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
-
+argSeed = 123456
 prng = DSFMT.create(argSeed)
--- npa = new parameter arrangement again --
+print(argSeed)
+-- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
 reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
@@ -19,11 +20,17 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.54"
 
--- mass ratio is now defined as mr=ml/md. fitting ml directly. other parameters the same
-mass_d   = mass_l / light_mass_ratio
-rscale_d = rscale_l / light_r_ratio
+--fitting ml directly. mass ratio as originally defined
+--radius ratio now defined the way mass ratio is.
+--bit of a construct because rscale_t is not really a thing
+--works better because this method makes r_d more sensitive to changes in radius_ratio
 
--- print(evolveTime)
+dwarfMass = mass_l / light_mass_ratio
+rscale_t  = rscale_l / light_r_ratio
+rscale_d  = rscale_t *  (1.0 - light_r_ratio)
+mass_d    = dwarfMass * (1.0 - light_mass_ratio)
+
+print(evolveTime)
 -- print(mass_d, mass_l)
 function makePotential()
    return  Potential.create{
@@ -57,7 +64,7 @@ end
 
 
 function makeContext()
-   soften_length = (mass_l*rscale_l + mass_d*rscale_d)/(mass_d+mass_l)
+   soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),

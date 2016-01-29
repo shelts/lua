@@ -2,8 +2,9 @@ arg = { ... }
 
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
-
+argSeed = 123456
 prng = DSFMT.create(argSeed)
+print(argSeed)
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
@@ -21,6 +22,9 @@ nbodyMinVersion = "1.54"
 
 --fitting ml directly. mass ratio as originally defined
 --radius ratio now defined the way mass ratio is.
+--bit of a construct because rscale_t is not really a thing
+--works better because this method makes r_d more sensitive to changes in radius_ratio
+
 dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
