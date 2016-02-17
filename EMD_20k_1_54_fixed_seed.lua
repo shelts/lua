@@ -2,7 +2,7 @@ arg = { ... }
 
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
-argSeed = 123456
+argSeed = 34086709
 prng = DSFMT.create(argSeed)
 print(argSeed)
 -- npa = new parameter arrangement --
@@ -82,7 +82,7 @@ function makeBodies(ctx, potential)
   local finalPosition, finalVelocity = reverseOrbit{
       potential = potential,
       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
-      velocity  = Vector.create(-156, 79, 107),
+      velocity  = Vector.create(-156+0.0360604975037, 79+0.0244145826704, 107-0.0530484481313),
       tstop     = reverseOrbitTime,
       dt        = ctx.timestep / 10.0
   }

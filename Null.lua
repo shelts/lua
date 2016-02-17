@@ -2,8 +2,9 @@ arg = { ... }
 
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
-
+argSeed = 34086709
 prng = DSFMT.create(argSeed)
+print(argSeed)
 -- print('seed=', argSeed)
 evolveTime       = tonumber(arg[1])
 reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
@@ -12,12 +13,12 @@ light_r_ratio    = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
 -- print(evolveTime)
-model1Bodies = 1
+model1Bodies = 20000
 
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
-nbodyMinVersion = "1.50"
+nbodyMinVersion = "1.54"
 
 dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
