@@ -71,6 +71,46 @@ function makeContext()
    }
 end
 
+function cm_correction(firstModel, finalPosition, finalVelocity)
+
+    cm_x = 0.0
+    cm_y = 0.0
+    cm_z = 0.0
+    cm_vx = 0.0
+    cm_vy = 0.0
+    cm_vz = 0.0
+    for i, v in ipairs(firstModel)
+    do
+        cm_x  = cm_x  + ( firstModel[i].mass * firstModel[i].position.x) 
+        cm_y  = cm_y  + ( firstModel[i].mass * firstModel[i].position.y) 
+        cm_z  = cm_z  + ( firstModel[i].mass * firstModel[i].position.z) 
+        cm_vx = cm_vx + ( firstModel[i].mass * firstModel[i].velocity.x) 
+        cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
+        cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
+    end
+    cm_x  = cm_x  / dwarfMass
+    cm_y  = cm_y  / dwarfMass
+    cm_z  = cm_z  / dwarfMass
+    cm_vx = cm_vx / dwarfMass
+    cm_vy = cm_vy / dwarfMass
+    cm_vz = cm_vz / dwarfMass
+    
+    for i, v in ipairs(firstModel)
+    do
+        x_new = firstModel[i].position.x - cm_x + finalPosition.x
+        y_new = firstModel[i].position.y - cm_y + finalPosition.y
+        z_new = firstModel[i].position.z - cm_z + finalPosition.z
+        
+        vx_new = firstModel[i].velocity.x - cm_vx + finalVelocity.x
+        vy_new = firstModel[i].velocity.y - cm_vy + finalVelocity.y
+        vz_new = firstModel[i].velocity.z - cm_vz + finalVelocity.z
+        
+        firstModel[i].position = Vector.create(x_new, y_new, z_new)
+        firstModel[i].velocity = Vector.create(vx_new, vy_new, vz_new)
+    end
+    
+  return firstModel
+end
 
 -- Also required
 function makeBodies(ctx, potential)
@@ -88,6 +128,8 @@ function makeBodies(ctx, potential)
         scaleRadius2 = rscale_d,
         ignore      = true
     }
+    
+--     cm_correction(firstModel, finalPosition, finalPosition)
 
 return firstModel
 end

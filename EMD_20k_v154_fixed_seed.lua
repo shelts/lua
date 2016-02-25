@@ -1,10 +1,12 @@
 arg = { ... }
 
-assert(#arg == 7, "Expected 7 arguments")
+assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
+argSeed = 34086709
+-- argSeed = 86043093
 
 prng = DSFMT.create(argSeed)
-print(argSeed)
+
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
@@ -13,8 +15,8 @@ rscale_l         = tonumber(arg[3])
 light_r_ratio    = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
-model1Bodies     = tonumber(arg[7])
 
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -30,7 +32,7 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-print(totalBodies)
+--print(evolveTime)
 -- print(mass_d, mass_l)
 function makePotential()
    return  Potential.create{
@@ -108,12 +110,12 @@ function makeHistogram()
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -150,
-     lambdaEnd = 150,
+     lambdaStart = -75,
+     lambdaEnd = 50,
      lambdaBins = 50,
      betaStart = -40,
      betaEnd = 40,
-     betaBins = 1 
+     betaBins = 1
 }
 end
 
