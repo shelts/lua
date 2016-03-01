@@ -76,7 +76,7 @@ end
 -- This function takes the table of bodies produced and zeroes the center of mass 
 -- and center of momentum. It then shifts the center of mass and center of momentum
 -- to the expected value for its position in the orbit.
-function cm_correction(firstModel, finalPosition, finalVelocity)
+function cm_correction(firstModel, dwarf_starting_position, dwarf_starting_velocity)
 
     cm_x = 0.0
     cm_y = 0.0
@@ -89,6 +89,7 @@ function cm_correction(firstModel, finalPosition, finalVelocity)
         cm_x  = cm_x  + ( firstModel[i].mass * firstModel[i].position.x) 
         cm_y  = cm_y  + ( firstModel[i].mass * firstModel[i].position.y) 
         cm_z  = cm_z  + ( firstModel[i].mass * firstModel[i].position.z) 
+        
         cm_vx = cm_vx + ( firstModel[i].mass * firstModel[i].velocity.x) 
         cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
         cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
@@ -99,43 +100,72 @@ function cm_correction(firstModel, finalPosition, finalVelocity)
     cm_vx = cm_vx / dwarfMass
     cm_vy = cm_vy / dwarfMass
     cm_vz = cm_vz / dwarfMass
-    
+    print('old CM: ', cm_x, cm_y, cm_z)
+    print('old CMV: ', cm_vx, cm_vy, cm_vz)
     for i, v in ipairs(firstModel)
     do
-        x_new = firstModel[i].position.x - cm_x + finalPosition.x
-        y_new = firstModel[i].position.y - cm_y + finalPosition.y
-        z_new = firstModel[i].position.z - cm_z + finalPosition.z
+        x_new = firstModel[i].position.x - cm_x + dwarf_starting_position.x
+        y_new = firstModel[i].position.y - cm_y + dwarf_starting_position.y
+        z_new = firstModel[i].position.z - cm_z + dwarf_starting_position.z
         
-        vx_new = firstModel[i].velocity.x - cm_vx + finalVelocity.x
-        vy_new = firstModel[i].velocity.y - cm_vy + finalVelocity.y
-        vz_new = firstModel[i].velocity.z - cm_vz + finalVelocity.z
+        vx_new = firstModel[i].velocity.x - cm_vx + dwarf_starting_velocity.x
+        vy_new = firstModel[i].velocity.y - cm_vy + dwarf_starting_velocity.y
+        vz_new = firstModel[i].velocity.z - cm_vz + dwarf_starting_velocity.z
         
         firstModel[i].position = Vector.create(x_new, y_new, z_new)
         firstModel[i].velocity = Vector.create(vx_new, vy_new, vz_new)
     end
-    
+    cm_x = 0.0
+    cm_y = 0.0
+    cm_z = 0.0
+    cm_vx = 0.0
+    cm_vy = 0.0
+    cm_vz = 0.0
+    for i, v in ipairs(firstModel)
+    do
+        cm_x  = cm_x  + ( firstModel[i].mass * firstModel[i].position.x) 
+        cm_y  = cm_y  + ( firstModel[i].mass * firstModel[i].position.y) 
+        cm_z  = cm_z  + ( firstModel[i].mass * firstModel[i].position.z) 
+        
+        cm_vx = cm_vx + ( firstModel[i].mass * firstModel[i].velocity.x) 
+        cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
+        cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
+    end
+    cm_x  = cm_x  / dwarfMass
+    cm_y  = cm_y  / dwarfMass
+    cm_z  = cm_z  / dwarfMass
+    cm_vx = cm_vx / dwarfMass
+    cm_vy = cm_vy / dwarfMass
+    cm_vz = cm_vz / dwarfMass
+    print('new CM: ', cm_x, cm_y, cm_z)
+    print('new CMV: ', cm_vx, cm_vy, cm_vz)
   return firstModel
 end
 
 -- Also required
 -- position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6))
+-- velocity  = Vector.create(-156, 79, 107),
 function makeBodies(ctx, potential)
   local firstModel
-  local finalPosition, finalVelocity = reverseOrbit{
+  --this puts a particle at the current postion and velocity of the Orphan stream
+  --calculates the reverse orbit along the potential and finds the required
+  --center of mass position and velocity.
+  local dwarf_starting_position, dwarf_starting_velocity = reverseOrbit{
       potential = potential,
       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
       velocity  = Vector.create(-156, 79, 107),
       tstop     = reverseOrbitTime,
       dt        = ctx.timestep / 10.0,
   }
---     print(finalPosition)
+    print('final position: ', dwarf_starting_position)
+    print('final velocity: ',dwarf_starting_velocity)
 --     print("position: ", lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)))
 --     print("velocity: ", Vector.create(-156, 79, 107))
   firstModel = predefinedModels.isotropic{
       nbody       = model1Bodies,
       prng        = prng,
-      position    = finalPosition,
-      velocity    = finalVelocity,
+      position    = dwarf_starting_position,
+      velocity    = dwarf_starting_velocity,
       mass1       = mass_l,
       mass2       = mass_d,
       scaleRadius1 = rscale_l,
@@ -143,7 +173,7 @@ function makeBodies(ctx, potential)
       ignore      = true
   }
   
-  cm_correction(firstModel, finalPosition, finalPosition)
+  cm_correction(firstModel, dwarf_starting_position, dwarf_starting_velocity)
 
   return firstModel
 end

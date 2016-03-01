@@ -2,7 +2,7 @@ arg = { ... }
 
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
-argSeed = 34086709
+-- argSeed = 34086709
 prng = DSFMT.create(argSeed)
 print(argSeed)
 -- print('seed=', argSeed)
@@ -116,7 +116,8 @@ end
 function makeBodies(ctx, potential)
     local firstModel
     local finalPosition, finalVelocity = Vector.create(0, 0, 0), Vector.create(0, 0, 0)
-
+    print(finalPosition)
+    print(finalVelocity)
     firstModel = predefinedModels.isotropic{
         nbody       = model1Bodies,
         prng        = prng,
@@ -129,7 +130,7 @@ function makeBodies(ctx, potential)
         ignore      = true
     }
     
---     cm_correction(firstModel, finalPosition, finalPosition)
+    cm_correction(firstModel, finalPosition, finalPosition)
 
 return firstModel
 end
