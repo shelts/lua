@@ -14,7 +14,7 @@ light_r_ratio    = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
 
-model1Bodies = 20000
+model1Bodies = 20
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -93,6 +93,8 @@ function cm_correction(firstModel, dwarf_starting_position, dwarf_starting_veloc
         cm_vx = cm_vx + ( firstModel[i].mass * firstModel[i].velocity.x) 
         cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
         cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
+        print('old positions: ' , firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z)
+        print('old velocities: ', firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
     end
     cm_x  = cm_x  / dwarfMass
     cm_y  = cm_y  / dwarfMass
@@ -130,6 +132,8 @@ function cm_correction(firstModel, dwarf_starting_position, dwarf_starting_veloc
         cm_vx = cm_vx + ( firstModel[i].mass * firstModel[i].velocity.x) 
         cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
         cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
+        print('new positions: ' , firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z)
+        print('new velocities: ', firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
     end
     cm_x  = cm_x  / dwarfMass
     cm_y  = cm_y  / dwarfMass
@@ -157,8 +161,8 @@ function makeBodies(ctx, potential)
       tstop     = reverseOrbitTime,
       dt        = ctx.timestep / 10.0,
   }
-    print('final position: ', dwarf_starting_position)
-    print('final velocity: ',dwarf_starting_velocity)
+--     print('final position: ', dwarf_starting_position.x, dwarf_starting_position.y, dwarf_starting_position.z)
+--     print('final velocity: ',dwarf_starting_velocity.x, dwarf_starting_velocity.y, dwarf_starting_velocity.z)
 --     print("position: ", lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)))
 --     print("velocity: ", Vector.create(-156, 79, 107))
   firstModel = predefinedModels.isotropic{
@@ -173,7 +177,7 @@ function makeBodies(ctx, potential)
       ignore      = true
   }
   
-  cm_correction(firstModel, dwarf_starting_position, dwarf_starting_velocity)
+--   cm_correction(firstModel, dwarf_starting_position, dwarf_starting_velocity)
 
   return firstModel
 end
@@ -186,8 +190,8 @@ function makeHistogram()
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -75,
-     lambdaEnd = 50,
+     lambdaStart = -150,
+     lambdaEnd = 150,
      lambdaBins = 50,
      betaStart = -40,
      betaEnd = 40,
