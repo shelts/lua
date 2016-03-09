@@ -3,8 +3,6 @@ arg = { ... }
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
 argSeed = 34086709
--- argSeed = 86043093
-print("seed: ", argSeed)
 prng = DSFMT.create(argSeed)
 
 -- npa = new parameter arrangement --
@@ -20,7 +18,7 @@ model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
-nbodyMinVersion = "1.56"
+nbodyMinVersion = "1.54"
 
 --fitting ml directly. mass ratio as originally defined
 --radius ratio now defined the way mass ratio is.
