@@ -101,7 +101,7 @@ function cm_correction(firstModel, finalPosition, finalVelocity)
         cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
         cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
         if correcting == 'n' then
-            print(firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z, firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
+--             print(firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z, firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
         end
         
 --         print('old positions: ', firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z)
@@ -150,7 +150,7 @@ function cm_correction(firstModel, finalPosition, finalVelocity)
         cm_vy = cm_vy + ( firstModel[i].mass * firstModel[i].velocity.y) 
         cm_vz = cm_vz + ( firstModel[i].mass * firstModel[i].velocity.z) 
         if correcting == 'y' then
-            print(firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z, firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
+--             print(firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z, firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
         end
 --         print('new positions: ' , firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z)
 --         print('new velocities: ', firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
