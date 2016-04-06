@@ -29,7 +29,9 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
---print(evolveTime)
+
+-- print(evolveTime, reverseOrbitTime)
+-- print(rscale_l, rscale_d)
 -- print(mass_d, mass_l)
 function makePotential()
    return  Potential.create{

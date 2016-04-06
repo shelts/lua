@@ -7,7 +7,7 @@ prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
-reverseOrbitTime = tonumber(arg[2])
+reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
@@ -19,7 +19,8 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.58"
 
---print(evolveTime)
+-- print(evolveTime, reverseOrbitTime)
+-- print(rscale_l, rscale_d)
 -- print(mass_d, mass_l)
 function makePotential()
    return  Potential.create{
