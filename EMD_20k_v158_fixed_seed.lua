@@ -43,10 +43,10 @@ end
 
 function get_timestep()
     --Mass of a single dark matter sphere enclosed within light rscale
-    mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l) + sqr(rscale_d) ) )^(-3.0/2.0)
 
     --Mass of a single light matter sphere enclosed within dark rscale
-    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l) + sqr(rscale_d) ) )^(-3.0/2.0)
 
     s1 = cube(rscale_l) / (mass_enc_d + mass_l)
     s2 = cube(rscale_d) / (mass_enc_l + mass_d)

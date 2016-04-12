@@ -32,10 +32,10 @@ end
 
 function get_timestep()
     --Mass of a single dark matter sphere enclosed within light rscale
-    mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l) + sqr(rscale_d) ) )^(-3.0/2.0)
 
     --Mass of a single light matter sphere enclosed within dark rscale
-    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l) + sqr(rscale_d) ) )^(-3.0/2.0)
 
     s1 = cube(rscale_l) / (mass_enc_d + mass_l)
     s2 = cube(rscale_d) / (mass_enc_l + mass_d)
@@ -48,7 +48,7 @@ function get_timestep()
     end
     
     -- I did it this way so there was only one place to change the time step. 
-    t = (1/100) * sqrt( pi_4_3 * s)
+    t = (1 / 100) * sqrt( pi_4_3 * s)
     return t
 end
 
@@ -100,7 +100,7 @@ function makeHistogram()
      psi = 90.70,
      lambdaStart = -75,
      lambdaEnd = 50,
-     lambdaBins = 50,
+     lambdaBins = 100,
      betaStart = -40,
      betaEnd = 40,
      betaBins = 1
