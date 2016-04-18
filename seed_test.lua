@@ -1,34 +1,23 @@
 arg = { ... }
 
-assert(#arg == 6, "Expected 6 arguments")
+assert(#arg == 7, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
-argSeed = 34086709
 prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
 reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
-light_r_ratio    = tonumber(arg[4])
+rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
-light_mass_ratio = tonumber(arg[6])
+mass_d           = tonumber(arg[6])
+bins             = tonumber(arg[7])
 
 model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
-nbodyMinVersion = "1.58"
-
---fitting ml directly. mass ratio as originally defined
---radius ratio now defined the way mass ratio is.
---bit of a construct because rscale_t is not really a thing
---works better because this method makes r_d more sensitive to changes in radius_ratio
-
-dwarfMass = mass_l / light_mass_ratio
-rscale_t  = rscale_l / light_r_ratio
-rscale_d  = rscale_t *  (1.0 - light_r_ratio)
-mass_d    = dwarfMass * (1.0 - light_mass_ratio)
-
+nbodyMinVersion = "1.60"
 
 -- print(evolveTime, reverseOrbitTime)
 -- print(rscale_l, rscale_d)
@@ -59,7 +48,7 @@ function get_timestep()
     end
     
     -- I did it this way so there was only one place to change the time step. 
-    t = (1/100) * sqrt( pi_4_3 * s)
+    t = (1 / 100) * sqrt( pi_4_3 * s)
     return t
 end
 
@@ -111,7 +100,7 @@ function makeHistogram()
      psi = 90.70,
      lambdaStart = -75,
      lambdaEnd = 50,
-     lambdaBins = 50,
+     lambdaBins = bins,
      betaStart = -40,
      betaEnd = 40,
      betaBins = 1
