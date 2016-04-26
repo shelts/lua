@@ -13,6 +13,14 @@ rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 mass_d           = tonumber(arg[6])
 
+
+evolveTime       = 3.87427734322731 
+reverseOrbitTime = 3.87427734322731 / 1.01387196544634
+rscale_l         = 1.29523584391164
+rscale_d         = 2.99564367318775
+mass_l           = 26.1017521350673
+mass_d           = 131.258621913187
+
 model1Bodies = 20000
 totalBodies = model1Bodies
 
