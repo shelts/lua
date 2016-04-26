@@ -43,7 +43,7 @@ function get_timestep()
     end
     
     -- I did it this way so there was only one place to change the time step. 
-    t = (1/100) * sqrt( pi_4_3 * s)
+    t = (1/100) * mw_sqrt( pi_4_3 * s)
     return t
 end
 
