@@ -30,7 +30,7 @@ function get_timestep()
     mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
 
     --Mass of a single light matter sphere enclosed within dark rscale
-    mass_enc_l = mass_l * (rscale_d)^3* ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
 
     s1 = cube(rscale_l) / (mass_enc_d + mass_l)
     s2 = cube(rscale_d) / (mass_enc_l + mass_d)
@@ -44,7 +44,8 @@ function get_timestep()
     
     -- I did it this way so there was only one place to change the time step. 
     t = (1/100) * sqrt( pi_4_3 * s)
-    print(string.format("%.15f \n", sqrt( pi_4_3 * s)))
+--     print(string.format("%.15f \n", cube( 123456.78)))
+--     print(string.format("%.15f \n", ( 123456.78)^(3)))
     return t
 end
 
@@ -78,7 +79,7 @@ function makeBodies(ctx, potential)
         scaleRadius2 = rscale_d,
         ignore      = true
     }
-    print(string.format("%.15f\t%.15f\t%.15f\t%.15f\n",mass_l,mass_d,rscale_l, rscale_d))
+    print(string.format("%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,tonumber(arg[2]),rscale_l, rscale_d,mass_l, mass_d))
     
 return firstModel
 end
