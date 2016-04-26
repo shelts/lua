@@ -15,12 +15,15 @@ mass_d           = tonumber(arg[6])
 
 
 evolveTime       = 3.87427734322731 
-reverseOrbitTime = 3.87427734322731 / 1.01387196544634
+reverseOrbitTime = evolveTime / 1.01387196544634
 rscale_l         = 1.29523584391164
 rscale_d         = 2.99564367318775
 mass_l           = 26.1017521350673
 mass_d           = 131.258621913187
+print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,reverseOrbitTime,rscale_l, rscale_d,mass_l, mass_d))
 
+evolveTime       = 0.000000001
+reverseOrbitTime = evolveTime / 1.01387196544634
 model1Bodies = 20000
 totalBodies = model1Bodies
 
@@ -87,7 +90,7 @@ function makeBodies(ctx, potential)
         scaleRadius2 = rscale_d,
         ignore      = true
     }
-    print(string.format("%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,tonumber(arg[2]),rscale_l, rscale_d,mass_l, mass_d))
+ 
     
 return firstModel
 end
