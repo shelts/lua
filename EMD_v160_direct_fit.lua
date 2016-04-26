@@ -67,6 +67,9 @@ end
 
 -- Also required
 -- position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6))
+
+
+
 function makeBodies(ctx, potential)
   local firstModel
   local finalPosition, finalVelocity = reverseOrbit{
