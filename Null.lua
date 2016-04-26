@@ -44,6 +44,7 @@ function get_timestep()
     
     -- I did it this way so there was only one place to change the time step. 
     t = (1/100) * mw_sqrt( pi_4_3 * s)
+    print(string.format("%.15f \n", mw_sqrt( pi_4_3 * s)))
     return t
 end
 
