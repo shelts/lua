@@ -50,6 +50,7 @@ end
 
 function makeContext()
    soften_length = (mass_l * rscale_l + mass_d * rscale_d) / (mass_d + mass_l)
+   print('time step =', get_timestep(), 'eps2 =' ,calculateEps2(totalBodies, soften_length))
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),
@@ -58,7 +59,6 @@ function makeContext()
       useQuad    = true,
       theta      = 1.0
    }
-   print('time step =', get_timestep(), 'eps2 =' ,calculateEps2(totalBodies, soften_length))
 end
 
 
