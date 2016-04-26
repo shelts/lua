@@ -17,7 +17,7 @@ model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
-nbodyMinVersion = "1.60"
+nbodyMinVersion = "1.62"
 
 
 function makePotential()
@@ -50,7 +50,7 @@ end
 
 function makeContext()
    soften_length = (mass_l * rscale_l + mass_d * rscale_d) / (mass_d + mass_l)
-   print('time step =', get_timestep(), 'eps2 =' ,calculateEps2(totalBodies, soften_length))
+   print(string.format("timestep = %.15f  eps2 = %.15f\n",get_timestep(), calculateEps2(totalBodies, soften_length)))
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),
@@ -77,8 +77,7 @@ function makeBodies(ctx, potential)
         scaleRadius2 = rscale_d,
         ignore      = true
     }
-    
-    print(mass_l, mass_d, rscale_l, rscale_d)
+    print(string.format("%.15f\t%.15f\t%.15f\t%.15f\n",mass_l,mass_d,rscale_l, rscale_d))
     
 return firstModel
 end
