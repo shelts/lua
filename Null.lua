@@ -58,6 +58,7 @@ function makeContext()
       useQuad    = true,
       theta      = 1.0
    }
+   print('time step =', get_timestep(), 'eps2 =' ,calculateEps2(totalBodies, soften_length))
 end
 
 
@@ -76,6 +77,8 @@ function makeBodies(ctx, potential)
         scaleRadius2 = rscale_d,
         ignore      = true
     }
+    
+    print(mass_l, mass_d, rscale_l, rscale_d)
     
 return firstModel
 end
