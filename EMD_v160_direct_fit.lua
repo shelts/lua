@@ -37,8 +37,8 @@ print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revO
 -- mass_d           = 131.258621913187
     
 
-evolveTime       = 0.000000001
-revOrbTime = evolveTime / 1.01387196544634
+-- evolveTime       = 0.000000001
+-- revOrbTime = evolveTime / 1.01387196544634
 
 model1Bodies = 20000
 totalBodies = model1Bodies
