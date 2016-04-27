@@ -7,23 +7,38 @@ prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
-reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
+revOrbTime       = tonumber(arg[1]) / tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 mass_d           = tonumber(arg[6])
 
+function round(num, idp)
+  local mult = 10^(idp or 0)
+  return floor(num * mult + 0.5) / mult
+end
+-- 
+print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
+-- 
+evolveTime       = round( evolveTime, 9 )
+revOrbTime       = round( revOrbTime, 9)
+rscale_l         = round( rscale_l, 9)
+rscale_d         = round( rscale_d, 9)
+mass_l           = round( mass_l, 9)
+mass_d           = round( mass_d, 9)
 
-evolveTime       = 3.87427734322731 
-reverseOrbitTime = evolveTime / 1.01387196544634
-rscale_l         = 1.29523584391164
-rscale_d         = 2.99564367318775
-mass_l           = 26.1017521350673
-mass_d           = 131.258621913187
-print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,reverseOrbitTime,rscale_l, rscale_d,mass_l, mass_d))
+print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
+
+-- evolveTime       = 3.87427734322731 
+-- revOrbTime = evolveTime / 1.01387196544634
+-- rscale_l         = 1.29523584391164
+-- rscale_d         = 2.99564367318775
+-- mass_l           = 26.1017521350673
+-- mass_d           = 131.258621913187
+    
 
 evolveTime       = 0.000000001
-reverseOrbitTime = evolveTime / 1.01387196544634
+revOrbTime = evolveTime / 1.01387196544634
 
 model1Bodies = 20000
 totalBodies = model1Bodies
@@ -31,7 +46,7 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.60"
 
--- print(evolveTime, reverseOrbitTime)
+-- print(evolveTime, revOrbTime)
 -- print(rscale_l, rscale_d)
 -- print(mass_d, mass_l)
 function makePotential()
@@ -85,7 +100,7 @@ function makeBodies(ctx, potential)
       potential = potential,
       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
       velocity  = Vector.create(-156, 79, 107),
-      tstop     = reverseOrbitTime,
+      tstop     = revOrbTime,
       dt        = ctx.timestep / 10.0
   }
   

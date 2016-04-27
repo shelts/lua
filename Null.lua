@@ -5,26 +5,26 @@ assert(argSeed ~= nil, "Expected seed")
 argSeed = 34086709
 prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
-
+print(string.format("%.15f\n", arg[5]))
 evolveTime       = tonumber(arg[1])
-reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
+revOrbTime       = tonumber(arg[1]) / tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 mass_d           = tonumber(arg[6])
 
 
-evolveTime       = 3.87427734322731 
-reverseOrbitTime = evolveTime / 1.01387196544634
-rscale_l         = 1.29523584391164
-rscale_d         = 2.99564367318775
-mass_l           = 26.1017521350673
-mass_d           = 131.258621913187
-print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,reverseOrbitTime,rscale_l, rscale_d,mass_l, mass_d))
-
+-- evolveTime       = 3.87427734322731 
+-- revOrbTime = evolveTime / 1.01387196544634
+-- rscale_l         = 1.29523584391164
+-- rscale_d         = 2.99564367318775
+-- mass_l           = 26.1017521350673
+-- mass_d           = 131.258621913187
+print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
+--[[
 evolveTime       = 0.000000001
-reverseOrbitTime = evolveTime / 1.01387196544634
-model1Bodies = 20000
+revOrbTime = evolveTime / 1.01387196544634]]
+model1Bodies = 2
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"

@@ -9,7 +9,7 @@ prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
-reverseOrbitTime = tonumber(arg[1]) / tonumber(arg[2])
+revOrbTime       = tonumber(arg[1]) / tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 light_r_ratio    = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
@@ -177,7 +177,7 @@ function makeBodies(ctx, potential)
       potential = potential,
       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
       velocity  = Vector.create(-156, 79, 107),
-      tstop     = reverseOrbitTime,
+      tstop     = revOrbTime,
       dt        = ctx.timestep / 10.0
   }
     print('final position: ', finalPosition.x, finalPosition.y, finalPosition.z)
