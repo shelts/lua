@@ -20,12 +20,13 @@ end
 -- 
 print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
 -- 
-evolveTime       = round( evolveTime, 9 )
-revOrbTime       = round( revOrbTime, 9)
-rscale_l         = round( rscale_l, 9)
-rscale_d         = round( rscale_d, 9)
-mass_l           = round( mass_l, 9)
-mass_d           = round( mass_d, 9)
+dec = 9
+evolveTime       = round( evolveTime, dec )
+revOrbTime       = round( revOrbTime, dec )
+rscale_l         = round( rscale_l,   dec )
+rscale_d         = round( rscale_d,   dec )
+mass_l           = round( mass_l,     dec )
+mass_d           = round( mass_d,     dec )
 
 print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
 
