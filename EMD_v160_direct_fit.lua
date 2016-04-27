@@ -19,20 +19,20 @@ function round(num, places)
 end
 
 dec = 9.0
-revOrbTime       = round( evolveTime, dec )
-rev_ratio        = round( rev_ratio, dec )
+evolveTime       = round( evolveTime, dec )
+rev_ratio        = round( rev_ratio,  dec )
 rscale_l         = round( rscale_l,   dec )
 rscale_d         = round( rscale_d,   dec )
 mass_l           = round( mass_l,     dec )
 mass_d           = round( mass_d,     dec )
 
 
-
-revOrbTime = revOrbTime / rev_ratio
+revOrbTime = evolveTime / rev_ratio
+print(string.format("%.15f\n", evolveTime))
     
 
--- evolveTime       = 0.000000001
--- revOrbTime = evolveTime / 1.01387196544634
+evolveTime       = 0.000000001
+revOrbTime = evolveTime / 1.01387196544634
 
 model1Bodies = 20000
 totalBodies = model1Bodies

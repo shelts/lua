@@ -7,24 +7,30 @@ prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
 print(string.format("%.15f\n", arg[5]))
 evolveTime       = tonumber(arg[1])
-revOrbTime       = tonumber(arg[1]) / tonumber(arg[2])
+rev_ratio        = tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 mass_d           = tonumber(arg[6])
 
+function round(num, places)
+  local mult = 10.0^(places)
+  return floor(num * mult + 0.5) / mult
+end
 
--- evolveTime       = 3.87427734322731 
--- revOrbTime = evolveTime / 1.01387196544634
--- rscale_l         = 1.29523584391164
--- rscale_d         = 2.99564367318775
--- mass_l           = 26.1017521350673
--- mass_d           = 131.258621913187
-print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
---[[
-evolveTime       = 0.000000001
-revOrbTime = evolveTime / 1.01387196544634]]
-model1Bodies = 2
+dec = 9.0
+evolveTime       = round( evolveTime, dec )
+rev_ratio        = round( rev_ratio,  dec )
+rscale_l         = round( rscale_l,   dec )
+rscale_d         = round( rscale_d,   dec )
+mass_l           = round( mass_l,     dec )
+mass_d           = round( mass_d,     dec )
+
+
+revOrbTime = evolveTime / rev_ratio
+-- evolveTime       = 0.000000001
+-- revOrbTime = evolveTime / 1.01387196544634]]
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
