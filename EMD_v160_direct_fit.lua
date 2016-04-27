@@ -7,35 +7,28 @@ prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
 
 evolveTime       = tonumber(arg[1])
-revOrbTime       = tonumber(arg[1]) / tonumber(arg[2])
+rev_ratio        = tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 rscale_d         = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
 mass_d           = tonumber(arg[6])
 
-function round(num, idp)
-  local mult = 10^(idp or 0)
+function round(num, places)
+  local mult = 10.0^(places)
   return floor(num * mult + 0.5) / mult
 end
--- 
-print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
--- 
-dec = 9
-evolveTime       = round( evolveTime, dec )
-revOrbTime       = round( revOrbTime, dec )
+
+dec = 9.0
+revOrbTime       = round( evolveTime, dec )
+rev_ratio        = round( rev_ratio, dec )
 rscale_l         = round( rscale_l,   dec )
 rscale_d         = round( rscale_d,   dec )
 mass_l           = round( mass_l,     dec )
 mass_d           = round( mass_d,     dec )
 
-print(string.format("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n",evolveTime,revOrbTime,rscale_l, rscale_d,mass_l, mass_d))
 
--- evolveTime       = 3.87427734322731 
--- revOrbTime = evolveTime / 1.01387196544634
--- rscale_l         = 1.29523584391164
--- rscale_d         = 2.99564367318775
--- mass_l           = 26.1017521350673
--- mass_d           = 131.258621913187
+
+revOrbTime = revOrbTime / rev_ratio
     
 
 -- evolveTime       = 0.000000001
@@ -60,13 +53,13 @@ end
 
 function get_timestep()
     --Mass of a single dark matter sphere enclosed within light rscale
-    mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l) + sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_d = mass_d * (rscale_l)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
     --Mass of a single light matter sphere enclosed within dark rscale
-    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l) + sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_l = mass_l * (rscale_d)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
-    s1 = cube(rscale_l) / (mass_enc_d + mass_l)
-    s2 = cube(rscale_d) / (mass_enc_l + mass_d)
+    s1 = (rscale_l)^3 / (mass_enc_d + mass_l)
+    s2 = (rscale_d)^3 / (mass_enc_l + mass_d)
     
     --return the smaller time step
     if(s1 < s2) then
@@ -76,13 +69,14 @@ function get_timestep()
     end
     
     -- I did it this way so there was only one place to change the time step. 
-    t = (1 / 100) * sqrt( pi_4_3 * s)
+    t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
     return t
 end
 
 
 function makeContext()
    soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
+   print(string.format("timestep = %.15f  eps2 = %.15f\n",get_timestep(), calculateEps2(totalBodies, soften_length)))
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),
