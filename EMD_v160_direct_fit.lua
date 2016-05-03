@@ -31,8 +31,8 @@ revOrbTime = evolveTime / rev_ratio
 print(string.format("%.15f\n", evolveTime))
     
 
-evolveTime       = 0.000000001
-revOrbTime = evolveTime / 1.01387196544634
+-- evolveTime       = 0.000000001
+-- revOrbTime = evolveTime / evolveTime
 
 model1Bodies = 20000
 totalBodies = model1Bodies

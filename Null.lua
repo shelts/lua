@@ -5,7 +5,6 @@ assert(argSeed ~= nil, "Expected seed")
 argSeed = 34086709
 prng = DSFMT.create(argSeed)
 -- npa = new parameter arrangement --
-print(string.format("%.15f\n", arg[5]))
 evolveTime       = tonumber(arg[1])
 rev_ratio        = tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
@@ -27,9 +26,8 @@ mass_l           = round( mass_l,     dec )
 mass_d           = round( mass_d,     dec )
 
 
-revOrbTime = evolveTime / rev_ratio
 -- evolveTime       = 0.000000001
--- revOrbTime = evolveTime / 1.01387196544634]]
+revOrbTime = evolveTime / rev_ratio
 model1Bodies = 20000
 totalBodies = model1Bodies
 
