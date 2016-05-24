@@ -76,7 +76,6 @@ end
 
 function makeContext()
    soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
-   print(string.format("timestep = %.15f  eps2 = %.15f\n",get_timestep(), calculateEps2(totalBodies, soften_length)))
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),

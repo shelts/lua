@@ -4,13 +4,13 @@ assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
 argSeed = 34086709
 prng = DSFMT.create(argSeed)
--- npa = new parameter arrangement --
+
 evolveTime       = tonumber(arg[1])
 rev_ratio        = tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
-rscale_d         = tonumber(arg[4])
+light_r_ratio    = tonumber(arg[4])
 mass_l           = tonumber(arg[5])
-mass_d           = tonumber(arg[6])
+light_mass_ratio = tonumber(arg[6])
 
 function round(num, places)
   local mult = 10.0^(places)
@@ -18,22 +18,24 @@ function round(num, places)
 end
 
 dec = 9.0
-evolveTime       = round( evolveTime, dec )
-rev_ratio        = round( rev_ratio,  dec )
-rscale_l         = round( rscale_l,   dec )
-rscale_d         = round( rscale_d,   dec )
-mass_l           = round( mass_l,     dec )
-mass_d           = round( mass_d,     dec )
+evolveTime       = round( evolveTime,       dec )
+rev_ratio        = round( rev_ratio,        dec )
+rscale_l         = round( rscale_l,         dec )
+light_r_ratio    = round( light_r_ratio,    dec )
+mass_l           = round( mass_l,           dec )
+light_mass_ratio = round( light_mass_ratio, dec )
 
-
--- evolveTime       = 0.000000001
-revOrbTime = evolveTime / rev_ratio
 model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.62"
 
+revOrbTime = evolveTime / rev_ratio
+dwarfMass = mass_l / light_mass_ratio
+rscale_t  = rscale_l / light_r_ratio
+rscale_d  = rscale_t *  (1.0 - light_r_ratio)
+mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
 function makePotential()
    
@@ -41,14 +43,14 @@ return  nil
 end
 
 function get_timestep()
-        --Mass of a single dark matter sphere enclosed within light rscale
-    mass_enc_d = mass_d * (rscale_l)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    --Mass of a single dark matter sphere enclosed within light rscale
+    mass_enc_d = mass_d * (rscale_l)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
     --Mass of a single light matter sphere enclosed within dark rscale
-    mass_enc_l = mass_l * (rscale_d)^3 * ( (sqr(rscale_l)+ sqr(rscale_d) ) )^(-3.0/2.0)
+    mass_enc_l = mass_l * (rscale_d)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
-    s1 = cube(rscale_l) / (mass_enc_d + mass_l)
-    s2 = cube(rscale_d) / (mass_enc_l + mass_d)
+    s1 = (rscale_l)^3 / (mass_enc_d + mass_l)
+    s2 = (rscale_d)^3 / (mass_enc_l + mass_d)
     
     --return the smaller time step
     if(s1 < s2) then
@@ -58,16 +60,13 @@ function get_timestep()
     end
     
     -- I did it this way so there was only one place to change the time step. 
-    t = (1/100) * sqrt( pi_4_3 * s)
---     print(string.format("%.15f \n", cube( 123456.78)))
---     print(string.format("%.15f \n", ( 123456.78)^(3)))
+    t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
     return t
 end
 
 
 function makeContext()
    soften_length = (mass_l * rscale_l + mass_d * rscale_d) / (mass_d + mass_l)
-   print(string.format("timestep = %.15f  eps2 = %.15f\n",get_timestep(), calculateEps2(totalBodies, soften_length)))
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),
@@ -88,7 +87,7 @@ function makeBodies(ctx, potential)
         prng        = prng,
         position    = finalPosition,
         velocity    = finalVelocity,
-        mass1       = mass_l, 
+        mass1       = mass_l,
         mass2       = mass_d,
         scaleRadius1 = rscale_l,
         scaleRadius2 = rscale_d,
