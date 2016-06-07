@@ -44,16 +44,18 @@ mass_ratio = 1/10
 mass_d = dwarfMass / (mass_ratio + 1)
 mass_l = dwarfMass - mass_d
 mass_d = 2.0 * mass_d
-print('forward time = ', evolveTime, 'rev time = ',  revOrbTime)
-print('mass_l = ', mass_l, 'mass_d = ', mass_d)
-
 rscale_d = .25
 r_ratio = 1.0/5.0
 rscale_l = rscale_d * r_ratio
 rscale_l = 0.025
 rscale_d = 0.3
+
+print_reverse_orbit = true
+print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
+print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
+print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
+print('total mass solar= ', (mass_d + mass_l) * 222288.47)
 print('rl = ', rscale_l, 'rd = ', rscale_d)
-print('total mass = ', (mass_d + mass_l) * 222288.47)
 
 -- function makePotential()
 --    return  Potential.create{
@@ -126,19 +128,20 @@ function makeBodies(ctx, potential)
       dt        = ctx.timestep / 10.0
     }
   
-  
-  PrintReverseOrbit{
-      potential = potential,
-      position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
-      velocity  = Vector.create(-122.78, 157.32, 64.90),
-      tstop     = .14,
-      dt        = ctx.timestep / 10.0,
-      prt       = 1.0
-  }
-  
+    
+  if(print_reverse_orbit == true) then
+    local placeholderPos, placeholderVel = PrintReverseOrbit{
+        potential = potential,
+        position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
+        velocity  = Vector.create(-122.78, 157.32, 64.90),
+        tstop     = .14,
+        dt        = ctx.timestep / 10.0
+    }
+    print('Printing reverse orbit')
+  end
   print(lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)), Vector.create(-122.78, 157.32, 64.90))
-  
   print(finalPosition, finalVelocity)
+  
   firstModel = predefinedModels.isotropic{
       nbody       = model1Bodies,
       prng        = prng,
