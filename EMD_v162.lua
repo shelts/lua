@@ -24,7 +24,6 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-
 model1Bodies = 20000
 totalBodies = model1Bodies
 
@@ -37,13 +36,41 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
+evolveTime = 2.0
+revOrbTime = 2.0
+
+dwarfMass = 5e6 / 222288.47
+mass_ratio = 1/10
+mass_d = dwarfMass / (mass_ratio + 1)
+mass_l = dwarfMass - mass_d
+mass_d = 2.0 * mass_d
+print('forward time = ', evolveTime, 'rev time = ',  revOrbTime)
+print('mass_l = ', mass_l, 'mass_d = ', mass_d)
+
+rscale_d = .25
+r_ratio = 1.0/5.0
+rscale_l = rscale_d * r_ratio
+rscale_l = 0.025
+rscale_d = 0.3
+print('rl = ', rscale_l, 'rd = ', rscale_d)
+print('total mass = ', (mass_d + mass_l) * 222288.47)
+
+-- function makePotential()
+--    return  Potential.create{
+--       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
+--       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
+--       halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
+--    }
+-- end
+
 function makePotential()
    return  Potential.create{
       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
-      halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
+      halo      = Halo.nfw{ vhalo = 73, scaleLength = 22.250}
    }
 end
+
 
 function get_timestep()
     --Mass of a single dark matter sphere enclosed within light rscale
@@ -64,6 +91,10 @@ function get_timestep()
     
     -- I did it this way so there was only one place to change the time step. 
     t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
+    
+--     t = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_d)) / (dwarfMass))
+    print('timestep ', t)
+    
     return t
 end
 
@@ -73,25 +104,41 @@ function makeContext()
    return NBodyCtx.create{
       timeEvolve = evolveTime,
       timestep   = get_timestep(),
-      eps2       = calculateEps2(totalBodies, soften_length),
+      eps2       = calculateEps2(totalBodies, soften_length ),
       criterion  = "NewCriterion",
       useQuad    = true,
       theta      = 1.0
    }
 end
-
+soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
+print('soften_length ', calculateEps2(totalBodies, soften_length ))
 -- Also required
+-- for orphan: lbr in sun centered
 -- position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6))
+-- velocity  = Vector.create(-156, 79, 107),
 function makeBodies(ctx, potential)
   local firstModel
   local finalPosition, finalVelocity = reverseOrbit{
       potential = potential,
-      position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
-      velocity  = Vector.create(-156, 79, 107),
+      position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
+      velocity  = Vector.create(-122.78, 157.32, 64.90),
       tstop     = revOrbTime,
       dt        = ctx.timestep / 10.0
+    }
+  
+  
+  PrintReverseOrbit{
+      potential = potential,
+      position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
+      velocity  = Vector.create(-122.78, 157.32, 64.90),
+      tstop     = .14,
+      dt        = ctx.timestep / 10.0,
+      prt       = 1.0
   }
   
+  print(lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)), Vector.create(-122.78, 157.32, 64.90))
+  
+  print(finalPosition, finalVelocity)
   firstModel = predefinedModels.isotropic{
       nbody       = model1Bodies,
       prng        = prng,
@@ -103,7 +150,11 @@ function makeBodies(ctx, potential)
       scaleRadius2 = rscale_d,
       ignore      = true
   }
-
+--     for i, v in ipairs(firstModel)
+--     do
+--         print(firstModel[i].position.x, firstModel[i].position.y, firstModel[i].position.z, firstModel[i].velocity.x, firstModel[i].velocity.y, firstModel[i].velocity.z)
+--         print(firstModel[i].mass)
+--     end
   return firstModel
 end
 
