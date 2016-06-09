@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 200
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -63,21 +63,21 @@ if(charles_run == true) then
     print('rl = ', rscale_l, 'rd = ', rscale_d)
 end
 
--- function makePotential()
---    return  Potential.create{
---       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
---       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
---       halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
---    }
--- end
-
 function makePotential()
    return  Potential.create{
       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
-      halo      = Halo.nfw{ vhalo = 73, scaleLength = 22.250}
+      halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
    }
 end
+
+-- function makePotential()
+--    return  Potential.create{
+--       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
+--       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
+--       halo      = Halo.nfw{ vhalo = 73, scaleLength = 22.250}
+--    }
+-- end
 
 
 function get_timestep()
@@ -179,11 +179,11 @@ function makeHistogram()
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -75,
-     lambdaEnd = 50,
+     lambdaStart = -150,
+     lambdaEnd = 150,
      lambdaBins = 100,
-     betaStart = -40,
-     betaEnd = 40,
+     betaStart = -100,
+     betaEnd = 100,
      betaBins = 1
 }
 end
