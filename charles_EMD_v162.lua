@@ -36,11 +36,9 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-charles_run = false
-print_reverse_orbit = false
-print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
-print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
-print('rl = ', rscale_l, 'rd = ', rscale_d)
+charles_run = true
+print_reverse_orbit = true
+
 if(charles_run == true) then
     evolveTime = 2.0
     revOrbTime = 2.0
@@ -71,17 +69,9 @@ function makePotential()
    return  Potential.create{
       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
-      halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
+      halo      = Halo.nfw{ vhalo = 73, scaleLength = 22.250}
    }
 end
-
--- function makePotential()
---    return  Potential.create{
---       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
---       disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
---       halo      = Halo.nfw{ vhalo = 73, scaleLength = 22.250}
---    }
--- end
 
 
 function get_timestep()
