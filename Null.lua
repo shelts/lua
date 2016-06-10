@@ -25,7 +25,7 @@ light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
 
-model1Bodies = 20000
+model1Bodies = 10000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -37,8 +37,19 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
+evolveTime = 0.1
+revOrbTime = 2
+    mass_d = 1e5 / (2 * 222288.47 )
+    rscale_d = 0.01
+    mass_l = 1e5 / (2 * 222288.47 )
+    rscale_l = 0.01
+print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
+print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
+print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
+print('total mass solar= ', (mass_d + mass_l) * 222288.47)
+print('rl = ', rscale_l, 'rd = ', rscale_d)
+
 function makePotential()
-   
 return  nil
 end
 
@@ -60,7 +71,7 @@ function get_timestep()
     end
     
     -- I did it this way so there was only one place to change the time step. 
-    t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
+    t = (1 / 1000.0) * ( pi_4_3 * s)^(1.0/2.0)
     return t
 end
 

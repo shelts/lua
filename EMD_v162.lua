@@ -37,9 +37,9 @@ rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
 print_reverse_orbit = false
-print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
-print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
-print('rl = ', rscale_l, 'rd = ', rscale_d)
+-- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
+-- print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
+-- print('rl = ', rscale_l, 'rd = ', rscale_d)
 
 
 function makePotential()
