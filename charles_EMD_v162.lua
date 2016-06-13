@@ -126,6 +126,17 @@ print(finalPosition, finalVelocity)
       scaleRadius2 = rscale_d,
       ignore      = true
   }
+  
+  
+--      firstModel = predefinedModels.plummer{
+--       nbody       = model1Bodies,
+--       prng        = prng,
+--       position    = finalPosition,
+--       velocity    = finalVelocity,
+--       mass        = mass_l,
+--       scaleRadius = rscale_l,
+--       ignore      = false
+--    }
   return firstModel
 end
 

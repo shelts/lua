@@ -1,9 +1,9 @@
 
 arg = { ... }
 
-assert(#arg == 4, "Expected 6 arguments")
+assert(#arg == 4, "Expected 4 arguments")
 assert(argSeed ~= nil, "Expected seed")
-
+argSeed = 34086709
 prng = DSFMT.create(argSeed)
 
 evolveTime       = tonumber(arg[1])
@@ -12,10 +12,10 @@ reverseOrbitTime = evolveTime / tonumber(arg[2])
 print(evolveTime)
 
 r0  = tonumber(arg[3])
-
+r0 = 0.2
 dwarfMass  = tonumber(arg[4])
-
-model1Bodies = 2000
+dwarfMass = 60
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 function makePotential()
