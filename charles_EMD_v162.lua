@@ -103,8 +103,8 @@ function makeBodies(ctx, potential)
   if(print_reverse_orbit == true) then
     local placeholderPos, placeholderVel = PrintReverseOrbit{
         potential = potential,
-        position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
-        velocity  = Vector.create(-122.78, 157.32, 64.90),
+        position  = lbrToCartesian(ctx, Vector.create(45, 46.98, 11.61)),
+        velocity  = Vector.create(-117.58, 165.21, 60.01),
         tstop     = .14,
         tstopf    = .20,
         dt        = ctx.timestep / 10.0
