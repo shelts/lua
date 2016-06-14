@@ -19,7 +19,7 @@ totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.62"
-run_null_potential = false
+run_null_potential = true
 print_reverse_orbit = false
 
 print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
@@ -93,8 +93,8 @@ function makeBodies(ctx, potential)
   else 
     finalPosition, finalVelocity = reverseOrbit{
         potential = potential,
-        position  = lbrToCartesian(ctx, Vector.create(45, 46.98, 11.61)),
-        velocity  = Vector.create(-117.58, 165.21, 60.01),
+        position  = lbrToCartesian(ctx, Vector.create(45, 47.20, 11.51)),
+        velocity  = Vector.create(-114.87, 166.06, 57.55),
         tstop     = revOrbTime,
         dt        = ctx.timestep / 10.0
         }
@@ -103,8 +103,8 @@ function makeBodies(ctx, potential)
   if(print_reverse_orbit == true) then
     local placeholderPos, placeholderVel = PrintReverseOrbit{
         potential = potential,
-        position  = lbrToCartesian(ctx, Vector.create(45, 46.98, 11.61)),
-        velocity  = Vector.create(-117.58, 165.21, 60.01),
+        position  = lbrToCartesian(ctx, Vector.create(45, 47.20, 11.51)),
+        velocity  = Vector.create(-114.87, 166.06, 57.55),
         tstop     = .14,
         tstopf    = .20,
         dt        = ctx.timestep / 10.0
