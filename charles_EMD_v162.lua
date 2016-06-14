@@ -14,12 +14,12 @@ mass_d           = tonumber(arg[6])
 
 mass_l = mass_l / 222288.47
 mass_d = mass_d / 222288.47
-model1Bodies = 10000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.62"
-run_null_potential = true
+run_null_potential = false
 print_reverse_orbit = false
 
 print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
@@ -93,8 +93,8 @@ function makeBodies(ctx, potential)
   else 
     finalPosition, finalVelocity = reverseOrbit{
         potential = potential,
-        position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
-        velocity  = Vector.create(-122.78, 157.32, 64.90),
+        position  = lbrToCartesian(ctx, Vector.create(45, 46.98, 11.61)),
+        velocity  = Vector.create(-117.58, 165.21, 60.01),
         tstop     = revOrbTime,
         dt        = ctx.timestep / 10.0
         }
