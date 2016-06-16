@@ -19,7 +19,7 @@ totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.62"
-run_null_potential = true
+run_null_potential = false
 print_reverse_orbit = false
 
 print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
@@ -115,28 +115,28 @@ function makeBodies(ctx, potential)
 print(lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)), Vector.create(-122.78, 157.32, 64.90))
 print(finalPosition, finalVelocity)
 
-  firstModel = predefinedModels.isotropic{
-      nbody       = model1Bodies,
-      prng        = prng,
-      position    = finalPosition,
-      velocity    = finalVelocity,
-      mass1       = mass_l,
-      mass2       = mass_d,
-      scaleRadius1 = rscale_l,
-      scaleRadius2 = rscale_d,
-      ignore      = true
-  }
-  
-  
---      firstModel = predefinedModels.plummer{
+--   firstModel = predefinedModels.isotropic{
 --       nbody       = model1Bodies,
 --       prng        = prng,
 --       position    = finalPosition,
 --       velocity    = finalVelocity,
---       mass        = mass_l,
---       scaleRadius = rscale_l,
---       ignore      = false
---    }
+--       mass1       = mass_l,
+--       mass2       = mass_d,
+--       scaleRadius1 = rscale_l,
+--       scaleRadius2 = rscale_d,
+--       ignore      = true
+--   }
+  
+  
+     firstModel = predefinedModels.plummer{
+      nbody       = model1Bodies,
+      prng        = prng,
+      position    = finalPosition,
+      velocity    = finalVelocity,
+      mass        = mass_d,
+      scaleRadius = rscale_d,
+      ignore      = false
+   }
   return firstModel
 end
 
