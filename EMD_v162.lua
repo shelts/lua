@@ -36,7 +36,6 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-print_reverse_orbit = false
 -- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
 -- print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
 -- print('rl = ', rscale_l, 'rd = ', rscale_d)
@@ -71,9 +70,6 @@ function get_timestep()
     -- I did it this way so there was only one place to change the time step. 
     t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
     
---     t = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_d)) / (dwarfMass))
-    print('timestep ', t)
-    
     return t
 end
 
@@ -99,26 +95,13 @@ function makeBodies(ctx, potential)
   local firstModel
   local finalPosition, finalVelocity = reverseOrbit{
       potential = potential,
-      position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
-      velocity  = Vector.create(-122.78, 157.32, 64.90),
+      position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
+      velocity  = Vector.create(-156, 79, 107),
       tstop     = revOrbTime,
       dt        = ctx.timestep / 10.0
     }
   
     
-  if(print_reverse_orbit == true) then
-    local placeholderPos, placeholderVel = PrintReverseOrbit{
-        potential = potential,
-        position  = lbrToCartesian(ctx, Vector.create(45, 46.93, 11.87)),
-        velocity  = Vector.create(-122.78, 157.32, 64.90),
-        tstop     = .14,
-        tstopf    = .20,
-        dt        = ctx.timestep / 10.0
-    }
-    print('Printing reverse orbit')
-  end
-  
-
   firstModel = predefinedModels.isotropic{
       nbody       = model1Bodies,
       prng        = prng,
@@ -140,8 +123,8 @@ function makeHistogram()
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -150,
-     lambdaEnd = 150,
+     lambdaStart = -75,
+     lambdaEnd = 50,
      lambdaBins = 100,
      betaStart = -100,
      betaEnd = 100,
