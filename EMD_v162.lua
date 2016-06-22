@@ -126,8 +126,8 @@ function makeHistogram()
      lambdaStart = -75,
      lambdaEnd = 50,
      lambdaBins = 100,
-     betaStart = -100,
-     betaEnd = 100,
+     betaStart = -40,
+     betaEnd = 40,
      betaBins = 1
 }
 end
