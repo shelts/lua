@@ -36,11 +36,6 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
--- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
--- print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
--- print('rl = ', rscale_l, 'rd = ', rscale_d)
-
-
 function makePotential()
    return  Potential.create{
       spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
