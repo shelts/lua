@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 2000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -39,21 +39,20 @@ mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 run_null_potential = true
 print_reverse_orbit = false
 
-print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
-print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
-print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
-print('total mass solar= ', (mass_d + mass_l) * 222288.47)
-print('rl = ', rscale_l, 'rd = ', rscale_d)
+-- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
+-- print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
+-- print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
+-- print('total mass solar= ', (mass_d + mass_l) * 222288.47)
+-- print('rl = ', rscale_l, 'rd = ', rscale_d)
 
 
 -- dwarf starting positions
-l  = 45
-b  = 46.98
-r  = 11.61
-vx = -117.58 
-vy = 165.21 
-vz = 60.01
-
+l  = 218
+b  = 53.5
+r  = 28.6
+vx = -156 
+vy = 79 
+vz = 107
 
 function makePotential()
    if(run_null_potential == true) then
@@ -63,7 +62,7 @@ function makePotential()
         return  Potential.create{
             spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
             disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
-            halo      = Halo.nfw{ vhalo = 73, scaleLength = 22.250}
+            halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
         }
    end
 end
@@ -90,7 +89,7 @@ function get_timestep()
     t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
     
     tmp = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_d)) / (mass_l + mass_d))
-    print('timestep ', t, tmp)
+--     print('timestep ', t, tmp)
     
     return t
 end
@@ -109,7 +108,7 @@ function makeContext()
 end
 
 soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
-print('soften_length ', calculateEps2(totalBodies, soften_length ))
+-- print('soften_length ', calculateEps2(totalBodies, soften_length ))
 
 function makeBodies(ctx, potential)
   local firstModel
@@ -139,18 +138,26 @@ function makeBodies(ctx, potential)
     print('Printing reverse orbit')
   end
   
-print(lbrToCartesian(ctx, Vector.create(l, b, r)), Vector.create(vx, vy, vz))
+-- print(lbrToCartesian(ctx, Vector.create(l, b, r)), Vector.create(vx, vy, vz))
 print(finalPosition, finalVelocity)
 
+  
+--   COMPONENT LIBRARY --
+    --   choose each component using listed number from the following list:
+              plummer  = 1 -- 1.  plummer sphere
+              nfw      = 2 -- 2.  nfw profile
+              gen_hern = 3 -- 3.  general hernquist
+              einasto  = 4 -- 4.  einasto
+              
   firstModel = predefinedModels.mixeddwarf{
       nbody       = model1Bodies,
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      mass1       = mass_l,
-      mass2       = mass_d,
-      scaleRadius1 = rscale_l,
-      scaleRadius2 = rscale_d,
+      argsl       = Vector.create(mass_l, rscale_l, 0.0),
+      argsd       = Vector.create(mass_d, rscale_d, 0.0),
+      component1  = plummer,
+      component2  = plummer,
       ignore      = true
   }
   

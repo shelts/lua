@@ -80,18 +80,27 @@ function makeContext()
       theta      = 1.0
    }
 end
-
+--       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
+--       velocity  = Vector.create(-156, 79, 107),
 
 -- Also required
 -- for orphan: lbr in sun centered
 -- position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6))
 -- velocity  = Vector.create(-156, 79, 107),
+      
+-- dwarf starting positions
+l  = 218
+b  = 53.5
+r  = 28.6
+vx = -156 
+vy = 79 
+vz = 107
 function makeBodies(ctx, potential)
   local firstModel
   local finalPosition, finalVelocity = reverseOrbit{
       potential = potential,
-      position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
-      velocity  = Vector.create(-156, 79, 107),
+      position  = lbrToCartesian(ctx, Vector.create(l, b, r)),
+      velocity  = Vector.create(vx, vy, vz),
       tstop     = revOrbTime,
       dt        = ctx.timestep / 10.0
     }
@@ -109,6 +118,8 @@ function makeBodies(ctx, potential)
       ignore      = true
   }
 
+  print(finalPosition, finalVelocity)
+  
   return firstModel
 end
 
