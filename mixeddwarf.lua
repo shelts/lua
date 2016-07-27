@@ -36,7 +36,7 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-run_null_potential = true
+run_null_potential = false
 print_reverse_orbit = false
 
 -- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
@@ -44,7 +44,6 @@ print_reverse_orbit = false
 -- print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
 -- print('total mass solar= ', (mass_d + mass_l) * 222288.47)
 -- print('rl = ', rscale_l, 'rd = ', rscale_d)
-
 
 -- dwarf starting positions
 l  = 218
@@ -141,27 +140,29 @@ function makeBodies(ctx, potential)
 -- print(lbrToCartesian(ctx, Vector.create(l, b, r)), Vector.create(vx, vy, vz))
 print(finalPosition, finalVelocity)
 
-  
---   COMPONENT LIBRARY --
-    --   choose each component using listed number from the following list:
-              plummer  = 1 -- 1.  plummer sphere
-              nfw      = 2 -- 2.  nfw profile
-              gen_hern = 3 -- 3.  general hernquist
-              einasto  = 4 -- 4.  einasto
-              
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
+-- --                         --   COMPONENT LIBRARY --                             --
+-- --       choose each component using listed number from the following list:      --
+              plummer  = 1 -- 1.  plummer sphere                                 --
+--               nfw      = 2 -- 2.  nfw profile                                    --    
+--               gen_hern = 3 -- 3.  general hernquist                              --
+--               einasto  = 4 -- 4.  einasto                                        --
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   firstModel = predefinedModels.mixeddwarf{
       nbody       = model1Bodies,
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      argsl       = Vector.create(mass_l, rscale_l, 0.0),
-      argsd       = Vector.create(mass_d, rscale_d, 0.0),
+      argsl       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l},
+      argsd       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d},
       component1  = plummer,
       component2  = plummer,
       ignore      = true
   }
+print 'here'
   
-  
+--         argsl       = Vector.create(mass_l, rscale_l, 0.0),
+--       argsd       = Vector.create(mass_d, rscale_d, 0.0),
   return firstModel
 end
 
