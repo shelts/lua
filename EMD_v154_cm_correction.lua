@@ -1,5 +1,5 @@
 arg = { ... }
-
+-- /* Copyright (c) 2016 Siddhartha Shelton */
 assert(#arg == 7, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
 argSeed = 34086709

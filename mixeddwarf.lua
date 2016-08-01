@@ -1,5 +1,5 @@
 arg = { ... }
-
+-- /* Copyright (c) 2016 Siddhartha Shelton */
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed")
 argSeed = 34086709
@@ -141,12 +141,12 @@ function makeBodies(ctx, potential)
 print(finalPosition, finalVelocity)
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
--- --                         --   COMPONENT LIBRARY --                             --
--- --       choose each component using listed number from the following list:      --
-              plummer  = 1 -- 1.  plummer sphere                                 --
---               nfw      = 2 -- 2.  nfw profile                                    --    
---               gen_hern = 3 -- 3.  general hernquist                              --
---               einasto  = 4 -- 4.  einasto                                        --
+--                            --   COMPONENT LIBRARY --                             --
+--          choose each component from the following list:                          --
+--               1. plummer sphere                                                  --
+--               2.  nfw profile                                                    --    
+--               3.  general hernquist                                              --
+--               4.  einasto                                                        --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   firstModel = predefinedModels.mixeddwarf{
       nbody       = model1Bodies,
@@ -159,10 +159,7 @@ print(finalPosition, finalVelocity)
       component2  = plummer,
       ignore      = true
   }
-print 'here'
   
---         argsl       = Vector.create(mass_l, rscale_l, 0.0),
---       argsd       = Vector.create(mass_d, rscale_d, 0.0),
   return firstModel
 end
 
