@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 20
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -153,10 +153,8 @@ print(finalPosition, finalVelocity)
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      argsl       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l},
-      argsd       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d},
-      component1  = plummer,
-      component2  = plummer,
+      comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l},
+      comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d},
       ignore      = true
   }
   
