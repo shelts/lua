@@ -36,7 +36,7 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-run_null_potential = false
+run_null_potential = true
 print_reverse_orbit = false
 
 -- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
@@ -143,9 +143,9 @@ print(finalPosition, finalVelocity)
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
 --                            --   COMPONENT LIBRARY --                             --
 --          choose each component from the following list:                          --
---               1. plummer sphere                                                  --
---               2.  nfw profile                                                    --    
---               3.  general hernquist                                              --
+--               1.  plummer                                                        --
+--               2.  nfw                                                            --    
+--               3.  gen_hern                                                       --
 --               4.  einasto                                                        --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   firstModel = predefinedModels.mixeddwarf{
