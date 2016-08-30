@@ -145,7 +145,7 @@ print(finalPosition, finalVelocity)
 --          choose each component from the following list:                          --
 --               1.  plummer                                                        --
 --               2.  nfw                                                            --    
---               3.  gen_hern                                                       --
+--               3.  general_hernquist                                              --
 --               4.  einasto                                                        --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   firstModel = predefinedModels.mixeddwarf{
@@ -153,10 +153,23 @@ print(finalPosition, finalVelocity)
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l},
-      comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d},
+      comp1       = Dwarf.nfw{mass = mass_l, scaleLength = rscale_l},
+      comp2       = Dwarf.nfw{mass = mass_d, scaleLength = rscale_d},
       ignore      = true
   }
+  
+--     firstModel = predefinedModels.isotropic{
+--       nbody       = model1Bodies,
+--       prng        = prng,
+--       position    = finalPosition,
+--       velocity    = finalVelocity,
+--       mass1       = mass_l,
+--       mass2       = mass_d,
+--       scaleRadius1 = rscale_l,
+--       scaleRadius2 = rscale_d,
+--       ignore      = true
+--   }
+
   
   return firstModel
 end
