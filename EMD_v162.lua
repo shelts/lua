@@ -120,7 +120,7 @@ function makeBodies(ctx, potential)
       ignore      = true
   }
 
-  print(finalPosition, finalVelocity)
+--   print(finalPosition, finalVelocity)
   
   return firstModel
 end
