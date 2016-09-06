@@ -9,7 +9,7 @@ evolveTime       = tonumber(arg[1])
 rev_ratio        = tonumber(arg[2])
 rscale_l         = tonumber(arg[3])
 light_r_ratio    = tonumber(arg[4])
-mass_l           = tonumber(arg[5])
+mass             = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
 
 function round(num, places)
@@ -22,19 +22,19 @@ evolveTime       = round( evolveTime,       dec )
 rev_ratio        = round( rev_ratio,        dec )
 rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
-mass_l           = round( mass_l,           dec )
+mass             = round( mass,             dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 2000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.62"
 
 revOrbTime = evolveTime / rev_ratio
-dwarfMass = mass_l / light_mass_ratio
-rscale_t  = rscale_l / light_r_ratio
-rscale_d  = rscale_t *  (1.0 - light_r_ratio)
-mass_d    = dwarfMass * (1.0 - light_mass_ratio)
+
+rscale_d = rscale_l
+mass_l = 0.5 * mass
+mass_d = 0.5 * mass
 
 function makePotential()
    return  Potential.create{
