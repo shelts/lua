@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 2000
+model1Bodies = 2
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -36,7 +36,7 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-print(evolveTime, revOrbTime, rscale_l, light_r_ratio, mass_l, light_mass_ratio)
+print(evolveTime, rev_ratio, rscale_l, light_r_ratio, mass_l, light_mass_ratio)
 
 function makePotential()
    return  Potential.create{
@@ -128,7 +128,7 @@ end
 function makeHistogram()
     return HistogramParams.create{
      --Orphan Stream coordinate transformation angles
-     phi = 128.79,
+     phi = 128.79,-- these are in degrees
      theta = 54.39,
      psi = 90.70,
      lambdaStart = -75,
