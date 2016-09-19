@@ -133,7 +133,7 @@ function makeHistogram()
      psi = 90.70,
      lambdaStart = -75,
      lambdaEnd = 50,
-     lambdaBins = 100,
+     lambdaBins = 50,
      betaStart = -40,
      betaEnd = 40,
      betaBins = 1
