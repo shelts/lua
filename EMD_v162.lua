@@ -37,6 +37,13 @@ rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
 print(evolveTime, rev_ratio, rscale_l, light_r_ratio, mass_l, light_mass_ratio)
+print_reverse_orbit = true
+
+
+--masses in order:
+--spherical bulge: 3.4e10
+--MN disk: 10e10
+--log halo: 14e10
 
 function makePotential()
    return  Potential.create{
@@ -66,7 +73,6 @@ function get_timestep()
     
     -- I did it this way so there was only one place to change the time step. 
     t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
-    
     return t
 end
 
@@ -107,7 +113,21 @@ function makeBodies(ctx, potential)
       dt        = ctx.timestep / 10.0
     }
   
-    
+    if(print_reverse_orbit == true) then
+        local placeholderPos, placeholderVel = PrintReverseOrbit{
+            potential = potential,
+            position  = lbrToCartesian(ctx, Vector.create(l, b, r)),
+            velocity  = Vector.create(vx, vy, vz),
+            tstop     = 2.0,
+            tstopf    = 2.0,
+            dt        = ctx.timestep / 10.0
+        }
+        print('Printing reverse orbit')
+        
+  end
+  
+-- print(lbrToCartesian(ctx, Vector.create(l, b, r)), Vector.create(vx, vy, vz))
+-- print(finalPosition, finalVelocity)
   firstModel = predefinedModels.isotropic{
       nbody       = model1Bodies,
       prng        = prng,
