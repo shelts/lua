@@ -95,14 +95,15 @@ end
 
 
 function makeContext()
-   soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
+   soften_length  = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
    return NBodyCtx.create{
-      timeEvolve = evolveTime,
-      timestep   = get_timestep(),
-      eps2       = calculateEps2(totalBodies, soften_length ),
-      criterion  = "NewCriterion",
-      useQuad    = true,
-      theta      = 1.0
+      timeEvolve  = evolveTime,
+      timestep    = get_timestep(),
+      eps2        = calculateEps2(totalBodies, soften_length ),
+      criterion   = "NewCriterion",
+      useQuad     = true,
+      useBestLike = false,
+      theta       = 1.0
    }
 end
 
