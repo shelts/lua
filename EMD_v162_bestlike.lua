@@ -81,6 +81,7 @@ function makeContext()
       eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = "NewCriterion",
       useQuad     = true,
+      useBestLike = true,
       theta       = 1.0
    }
 end
