@@ -82,6 +82,7 @@ function makeContext()
       criterion   = "NewCriterion",
       useQuad     = true,
       useBestLike = true,
+      BestLikeStart = 0.95,
       theta       = 1.0
    }
 end
