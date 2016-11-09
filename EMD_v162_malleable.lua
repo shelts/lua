@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 2
+model1Bodies = 2000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -36,9 +36,14 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-print(evolveTime, rev_ratio, rscale_l, light_r_ratio, mass_l, light_mass_ratio)
-print_reverse_orbit = false
-TMPevolveTime = 0.00001
+print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
+print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
+-- print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
+-- print('total mass solar= ', (mass_d + mass_l) * 222288.47)
+print('rl = ', rscale_l, 'rd = ', rscale_d)
+
+
+
 
 --masses in order:
 --spherical bulge: 3.4e10
@@ -78,14 +83,14 @@ end
 
 
 function makeContext()
-   soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
+   soften_length  = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
    return NBodyCtx.create{
-      timeEvolve = TMPevolveTime,
-      timestep   = get_timestep(),
-      eps2       = calculateEps2(totalBodies, soften_length ),
-      criterion  = "NewCriterion",
-      useQuad    = true,
-      theta      = 1.0
+      timeEvolve  = evolveTime,
+      timestep    = get_timestep(),
+      eps2        = calculateEps2(totalBodies, soften_length ),
+      criterion   = "NewCriterion",
+      useQuad     = true,
+      theta       = 1.0
    }
 end
 --       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),
@@ -112,22 +117,10 @@ function makeBodies(ctx, potential)
       tstop     = revOrbTime,
       dt        = ctx.timestep / 10.0
     }
-  
-    if(print_reverse_orbit == true) then
-        local placeholderPos, placeholderVel = PrintReverseOrbit{
-            potential = potential,
-            position  = lbrToCartesian(ctx, Vector.create(l, b, r)),
-            velocity  = Vector.create(vx, vy, vz),
-            tstop     = 2.0,
-            tstopf    = 2.0,
-            dt        = ctx.timestep / 10.0
-        }
-        print('Printing reverse orbit')
-        
-  end
+
   
 -- print(lbrToCartesian(ctx, Vector.create(l, b, r)), Vector.create(vx, vy, vz))
--- print(finalPosition, finalVelocity)
+print(finalPosition, finalVelocity)
   firstModel = predefinedModels.isotropic{
       nbody       = model1Bodies,
       prng        = prng,
