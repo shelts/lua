@@ -90,7 +90,9 @@ function makeContext()
       eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = "NewCriterion",
       useQuad     = true,
-      theta       = 1.0
+      theta       = 1.0,
+      useBestLike = false,
+      BestLikeStart = 0.95,
    }
 end
 --       position  = lbrToCartesian(ctx, Vector.create(218, 53.5, 28.6)),

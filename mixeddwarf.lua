@@ -145,18 +145,18 @@ print(finalPosition, finalVelocity)
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
 --                            --   COMPONENT LIBRARY --                             --
 --          choose each component from the following list:                          --
---               1.  plummer                                                        --
---               2.  nfw                                                            --    
---               3.  general_hernquist                                              --
---               4.  einasto                                                        --
+--               1.  Dwarf.plummer                                                        --
+--               2.  Dwarf.nfw                                                            --    
+--               3.  Dwarf.general_hernquist                                              --
+--               4.  Dwarf.einasto                                                        --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   firstModel = predefinedModels.mixeddwarf{
       nbody       = model1Bodies,
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      comp1       = Dwarf.nfw{mass = mass_l, scaleLength = rscale_l},
-      comp2       = Dwarf.nfw{mass = mass_l, scaleLength = rscale_l},
+      comp1       = Dwarf.nfw{mass = mass_l, scaleLength = rscale_l, p0 = 0.0},
+      comp2       = Dwarf.nfw{mass = mass_d, scaleLength = rscale_d, p0 = 0.0},
       ignore      = true
   }
   
