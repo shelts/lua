@@ -155,8 +155,8 @@ print(finalPosition, finalVelocity)
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      comp1       = Dwarf.plummer {mass = mass_l, scaleLength = rscale_l},
-      comp2       = Dwarf.nfw {mass = mass_d, scaleLength = rscale_d},
+      comp1       = Dwarf.nfw{mass = mass_l, scaleLength = rscale_l},
+      comp2       = Dwarf.nfw{mass = mass_d, scaleLength = rscale_d},
       ignore      = true
   }
   
