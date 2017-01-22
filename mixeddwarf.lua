@@ -160,6 +160,8 @@ print(finalPosition, finalVelocity)
       ignore      = true
   }
   
+  
+
 --     firstModel = predefinedModels.isotropic{
 --       nbody       = model1Bodies,
 --       prng        = prng,
