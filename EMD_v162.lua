@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 20000
+model1Bodies = 2000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -137,7 +137,7 @@ function makeHistogram()
      psi = 90.70,
      lambdaStart = -75,
      lambdaEnd = 50,
-     lambdaBins = 100,
+     lambdaBins = 50,
      betaStart = -40,
      betaEnd = 40,
      betaBins = 1

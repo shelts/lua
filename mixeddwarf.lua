@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 10000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -36,7 +36,7 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
-run_null_potential = true
+run_null_potential = false
 print_reverse_orbit = false
 
 -- print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
@@ -103,6 +103,7 @@ function makeContext()
       criterion   = "NewCriterion",
       useQuad     = true,
       useBestLike = false,
+      useVelDisp  = true,
       BestLikeStart = 0.95,
       theta       = 1.0
    }
@@ -145,18 +146,18 @@ print(finalPosition, finalVelocity)
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
 --                            --   COMPONENT LIBRARY --                             --
 --          choose each component from the following list:                          --
---               1.  Dwarf.plummer                                                        --
---               2.  Dwarf.nfw                                                            --    
---               3.  Dwarf.general_hernquist                                              --
---               4.  Dwarf.einasto                                                        --
+--               1.  Dwarf.plummer                                                  --
+--               2.  Dwarf.nfw                                                      --    
+--               3.  Dwarf.general_hernquist                                        --
+--               4.  Dwarf.einasto                                                  --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   firstModel = predefinedModels.mixeddwarf{
       nbody       = model1Bodies,
       prng        = prng,
       position    = finalPosition,
       velocity    = finalVelocity,
-      comp1       = Dwarf.nfw{mass = mass_l, scaleLength = rscale_l},
-      comp2       = Dwarf.nfw{mass = mass_d, scaleLength = rscale_d},
+      comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l},
+      comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d},
       ignore      = true
   }
   
@@ -186,7 +187,7 @@ function makeHistogram()
      psi = 90.70,
      lambdaStart = -150,
      lambdaEnd = 150,
-     lambdaBins = 100,
+     lambdaBins = 50,
      betaStart = -100,
      betaEnd = 100,
      betaBins = 1
