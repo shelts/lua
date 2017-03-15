@@ -30,7 +30,7 @@ totalBodies = model1Bodies
 nbodyLikelihoodMethod = "EMD"
 nbodyMinVersion = "1.62"
 
-revOrbTime = evolveTime / rev_ratio
+revOrbTime = evolveTime
 dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
@@ -102,7 +102,7 @@ function makeContext()
       eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = "NewCriterion",
       useQuad     = true,
-      useBestLike = false,
+      useBestLike = true,
       useVelDisp  = true,
       BestLikeStart = 0.95,
       theta       = 1.0
@@ -188,8 +188,8 @@ function makeHistogram()
      lambdaStart = -150,
      lambdaEnd = 150,
      lambdaBins = 50,
-     betaStart = -100,
-     betaEnd = 100,
+     betaStart = -5,
+     betaEnd = 5,
      betaBins = 1
 }
 end
