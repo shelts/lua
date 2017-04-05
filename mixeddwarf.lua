@@ -104,7 +104,7 @@ function makeContext()
       useQuad     = true,
       useBestLike = true,
       useVelDisp  = true,
-      BestLikeStart = 0.95,
+      BestLikeStart = 0.98,
       theta       = 1.0
    }
 end
