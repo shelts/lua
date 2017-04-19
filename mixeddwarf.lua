@@ -24,7 +24,7 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 20000
+model1Bodies = 2000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -141,7 +141,7 @@ function makeBodies(ctx, potential)
   end
   
 -- print(lbrToCartesian(ctx, Vector.create(l, b, r)), Vector.create(vx, vy, vz))
-print(finalPosition, finalVelocity)
+-- print(finalPosition, finalVelocity)
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
 --                            --   COMPONENT LIBRARY --                             --
