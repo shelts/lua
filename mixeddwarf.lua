@@ -24,11 +24,11 @@ rscale_l         = round( rscale_l,         dec )
 light_r_ratio    = round( light_r_ratio,    dec )
 mass_l           = round( mass_l,           dec )
 light_mass_ratio = round( light_mass_ratio, dec )
-model1Bodies = 2000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
-nbodyMinVersion = "1.62"
+nbodyMinVersion = "1.64"
 
 revOrbTime = evolveTime
 dwarfMass = mass_l / light_mass_ratio
