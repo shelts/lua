@@ -11,18 +11,18 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 2   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.64"  -- -- MINIMUM APP VERSION        -- --
 
-run_null_potential    = true   -- -- NULL POTENTIAL SWITCH      -- --
+run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
 isotropic_version     = false   -- -- TWO COMPONENTS SWITCH      -- --
 
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = false   -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = true   -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 
@@ -242,7 +242,8 @@ mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
 
 if(use_tree_code) then
-    criterion = "NewCriterion"
+--     criterion = "NewCriterion"
+    criterion = "TreeCode"
 else
     criterion = "Exact"
 end
@@ -250,6 +251,7 @@ end
 
 if(print_out_parameters) then
     print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
+    print(' rr = ', light_r_ratio, '\nmr = ', light_mass_ratio)
     print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
     print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
     print('total mass solar= ', (mass_d + mass_l) * 222288.47)
