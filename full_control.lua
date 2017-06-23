@@ -5,6 +5,12 @@
 -- This is the developer version of the lua parameter file. 
 -- It gives all the options you can have. 
 -- Many of these the client will not need.
+
+-- NOTE --
+-- if you are using single component plummer model, it will take the baryonic
+-- matter component parameters. meaning you input should look like
+-- ft, bt, rscale_baryon, radius_ratio, baryon mass, mass ratio
+-- typical parameters: 4.0, 1.0, 0.2, 0.2, 12, 0.2
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
         
@@ -16,10 +22,7 @@ nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.64"  -- -- MINIMUM APP VERSION        -- --
 
 run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
-
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
-isotropic_version     = false   -- -- TWO COMPONENTS SWITCH      -- --
-
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
 print_out_parameters  = true   -- -- PRINT OUT ALL PARAMETERS   -- --
@@ -46,6 +49,8 @@ use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
+timestep_control     = false   -- -- control number of steps    -- --
+Ntime_steps          = 10     -- -- number of timesteps to run -- --
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
 l  = 218
@@ -73,28 +78,32 @@ end
 
 
 function get_timestep()
-    --Mass of a single dark matter sphere enclosed within light rscale
-    mass_enc_d = mass_d * (rscale_l)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
+    if(two_component_model == true) then
+        --Mass of a single dark matter sphere enclosed within light rscale
+        mass_enc_d = mass_d * (rscale_l)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
-    --Mass of a single light matter sphere enclosed within dark rscale
-    mass_enc_l = mass_l * (rscale_d)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
+        --Mass of a single light matter sphere enclosed within dark rscale
+        mass_enc_l = mass_l * (rscale_d)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
-    s1 = (rscale_l)^3 / (mass_enc_d + mass_l)
-    s2 = (rscale_d)^3 / (mass_enc_l + mass_d)
-    
-    --return the smaller time step
-    if(s1 < s2) then
-        s = s1
-    else
-        s = s2
+        s1 = (rscale_l)^3 / (mass_enc_d + mass_l)
+        s2 = (rscale_d)^3 / (mass_enc_l + mass_d)
+        
+        --return the smaller time step
+        if(s1 < s2) then
+            s = s1
+        else
+            s = s2
+        end
+        
+        -- I did it this way so there was only one place to change the time step. 
+        t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
+        
+    --     tmp = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_d)) / (mass_l + mass_d))
+    --     print('timestep ', t, tmp)
+    else 
+        t = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_l)) / (mass_l))
     end
-    
-    -- I did it this way so there was only one place to change the time step. 
-    t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
-    
-    tmp = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_d)) / (mass_l + mass_d))
---     print('timestep ', t, tmp)
-    
+--     print(t)
     return t
 end
 
@@ -147,8 +156,7 @@ function makeBodies(ctx, potential)
     
 
   
-    if(two_component_model and not isotropic_version) then 
-        print("running mixed dwarf")
+    if(two_component_model) then 
         firstModel = predefinedModels.mixeddwarf{
             nbody       = totalBodies,
             prng        = prng,
@@ -159,25 +167,7 @@ function makeBodies(ctx, potential)
             ignore      = true
         }
         
-        
-        
-    elseif(two_component_model and isotropic_version) then
-        print("running isotropic")
-        firstModel = predefinedModels.isotropic{
-            nbody       = totalBodies,
-            prng        = prng,
-            position    = finalPosition,
-            velocity    = finalVelocity,
-            mass1       = mass_l,
-            mass2       = mass_d,
-            scaleRadius1 = rscale_l,
-            scaleRadius2 = rscale_d,
-            ignore      = true
-        }
-
-        
     else
-        print("running single component plummer")
         firstModel = predefinedModels.plummer{
             nbody       = totalBodies,
             prng        = prng,
@@ -242,8 +232,8 @@ mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
 
 if(use_tree_code) then
---     criterion = "NewCriterion"
     criterion = "TreeCode"
+--     criterion = "NewCriterion"
 else
     criterion = "Exact"
 end
@@ -251,7 +241,6 @@ end
 
 if(print_out_parameters) then
     print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
-    print(' rr = ', light_r_ratio, '\nmr = ', light_mass_ratio)
     print('mass_l sim=', mass_l, '\nmass_d sim=', mass_d)
     print('light mass solar=', mass_l * 222288.47, '\ndark mass solar=', mass_d * 222288.47)
     print('total mass solar= ', (mass_d + mass_l) * 222288.47)
