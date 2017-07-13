@@ -49,8 +49,8 @@ use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 10     -- -- number of timesteps to run -- --
+timestep_control     = true   -- -- control number of steps    -- --
+Ntime_steps          = 7680     -- -- number of timesteps to run -- --
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
 l  = 218
@@ -119,6 +119,8 @@ function makeContext()
       useBestLike = use_best_likelihood,
       useVelDisp  = use_vel_disps,
       BestLikeStart = best_like_start,
+      Nstep_control = timestep_control,
+      Ntsteps       = Ntime_steps,
       theta       = 1.0
    }
 end
