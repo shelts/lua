@@ -276,7 +276,7 @@ rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = get_md()
 
-rscale_d  = get_rscale()
+-- rscale_d  = get_rscale()
 
 
 if(use_tree_code) then
