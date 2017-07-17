@@ -49,7 +49,7 @@ use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = true   -- -- control number of steps    -- --
+timestep_control     = false   -- -- control number of steps    -- --
 Ntime_steps          = 7680     -- -- number of timesteps to run -- --
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
@@ -61,8 +61,8 @@ vy = 79
 vz = 107
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
-        
 
+        
 function makePotential()
    if(run_null_potential == true) then
        print("running in null potential")
@@ -76,6 +76,25 @@ function makePotential()
    end
 end
 
+
+function get_rscale()
+    r = 0.001
+    cutoff = mass_l / 2.0
+    while true do
+        mass_enc_l = mass_l * r ^ 3.0 / (r * r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
+        
+        if(mass_enc_l >= cutoff) then
+            break
+        else
+            r = r + 0.001
+        end
+    end
+    print( 'MASSENCL = ', mass_enc_l)
+    mr = (mass_d_enc / mass_d) ^ (2.0 / 3.0)
+    rs = (r * r) * ( 1.0 - mr) / mr
+    rs = rs ^ (1.0 / 2.0)
+    return rs
+end
 
 function get_timestep()
     if(two_component_model == true) then
@@ -221,16 +240,23 @@ dec = 9.0
 evolveTime       = round( tonumber(arg[1]), dec )
 rev_ratio        = round( tonumber(arg[2]), dec )
 rscale_l         = round( tonumber(arg[3]), dec )
-light_r_ratio    = round( tonumber(arg[4]), dec )
+-- light_r_ratio    = round( tonumber(arg[4]), dec )
+mass_d_enc       = round( tonumber(arg[4]), dec )
 mass_l           = round( tonumber(arg[5]), dec )
 light_mass_ratio = round( tonumber(arg[6]), dec )
 
 -- -- -- -- -- -- -- -- -- DWARF PARAMETERS   -- -- -- -- -- -- -- --
+-- revOrbTime = evolveTime
+-- dwarfMass = mass_l / light_mass_ratio
+-- rscale_t  = rscale_l / light_r_ratio
+-- rscale_d  = rscale_t *  (1.0 - light_r_ratio)
+-- mass_d    = dwarfMass * (1.0 - light_mass_ratio)
+
 revOrbTime = evolveTime
 dwarfMass = mass_l / light_mass_ratio
-rscale_t  = rscale_l / light_r_ratio
-rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
+
+rscale_d  = get_rscale()
 
 
 if(use_tree_code) then
