@@ -96,6 +96,25 @@ function get_rscale()
     return rs
 end
 
+function get_md()
+    r = 0.001
+    cutoff = mass_l / 2.0
+    while true do
+        mass_enc_l = mass_l * r ^ 3.0 / (r * r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
+        
+        if(mass_enc_l >= cutoff) then
+            break
+        else
+            r = r + 0.001
+        end
+    end
+    print( 'MASSENCL = ', mass_enc_l)
+    
+    md = mass_d_enc * (r * r + rscale_d * rscale_d ) ^ (3.0 / 2.0)
+    md = md / r ^ 3.0
+    return md
+end
+
 function get_timestep()
     if(two_component_model == true) then
         --Mass of a single dark matter sphere enclosed within light rscale
@@ -240,10 +259,10 @@ dec = 9.0
 evolveTime       = round( tonumber(arg[1]), dec )
 rev_ratio        = round( tonumber(arg[2]), dec )
 rscale_l         = round( tonumber(arg[3]), dec )
--- light_r_ratio    = round( tonumber(arg[4]), dec )
-mass_d_enc       = round( tonumber(arg[4]), dec )
+light_r_ratio    = round( tonumber(arg[4]), dec )
 mass_l           = round( tonumber(arg[5]), dec )
-light_mass_ratio = round( tonumber(arg[6]), dec )
+-- light_mass_ratio = round( tonumber(arg[6]), dec )
+mass_d_enc       = round( tonumber(arg[6]), dec )
 
 -- -- -- -- -- -- -- -- -- DWARF PARAMETERS   -- -- -- -- -- -- -- --
 -- revOrbTime = evolveTime
@@ -253,8 +272,9 @@ light_mass_ratio = round( tonumber(arg[6]), dec )
 -- mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
 revOrbTime = evolveTime
-dwarfMass = mass_l / light_mass_ratio
-mass_d    = dwarfMass * (1.0 - light_mass_ratio)
+rscale_t  = rscale_l / light_r_ratio
+rscale_d  = rscale_t *  (1.0 - light_r_ratio)
+mass_d    = get_md()
 
 rscale_d  = get_rscale()
 
