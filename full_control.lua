@@ -25,7 +25,7 @@ run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = true   -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 
@@ -49,16 +49,16 @@ use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 7680     -- -- number of timesteps to run -- --
+timestep_control     = true   -- -- control number of steps    -- --
+Ntime_steps          = 0    -- -- number of timesteps to run -- --
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
-l  = 218
-b  = 53.5
-r  = 28.6
-vx = -156 
-vy = 79 
-vz = 107
+orbit_parameter_l  = 218
+orbit_parameter_b  = 53.5
+orbit_parameter_r  = 28.6
+orbit_parameter_vx = -156 
+orbit_parameter_vy = 79 
+orbit_parameter_vz = 107
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
 
@@ -78,41 +78,41 @@ end
 
 
 function get_rscale()
-    r = 0.001
+    tmp_r = 0.001
     cutoff = mass_l / 2.0
     while true do
-        mass_enc_l = mass_l * r ^ 3.0 / (r * r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
+        tmp_mass_enc_l = mass_l * tmp_r ^ 3.0 / (tmp_r * tmp_r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
         
-        if(mass_enc_l >= cutoff) then
+        if(tmp_mass_enc_l >= cutoff) then
             break
         else
-            r = r + 0.001
+            tmp_r = tmp_r + 0.001
         end
     end
-    print( 'MASSENCL = ', mass_enc_l)
-    mr = (mass_d_enc / mass_d) ^ (2.0 / 3.0)
-    rs = (r * r) * ( 1.0 - mr) / mr
-    rs = rs ^ (1.0 / 2.0)
-    return rs
+    print( 'MASSENCL = ', tmp_mass_enc_l)
+    tmp_mr = (mass_d_enc / mass_d) ^ (2.0 / 3.0)
+    tmp_rs = (tmp_r * tmp_r) * ( 1.0 - tmp_mr) / tmp_mr
+    tmp_rs = tmp_rs ^ (1.0 / 2.0)
+    return tmp_rs
 end
 
 function get_md()
-    r = 0.001
+    tmp_r = 0.001
     cutoff = mass_l / 2.0
     while true do
-        mass_enc_l = mass_l * r ^ 3.0 / (r * r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
+        tmp_mass_enc_l = mass_l * tmp_r ^ 3.0 / (tmp_r * tmp_r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
         
-        if(mass_enc_l >= cutoff) then
+        if(tmp_mass_enc_l >= cutoff) then
             break
         else
-            r = r + 0.001
+            tmp_r = tmp_r + 0.001
         end
     end
-    print( 'MASSENCL = ', mass_enc_l)
+    print( 'MASSENCL = ', tmp_mass_enc_l)
     
-    md = mass_d_enc * (r * r + rscale_d * rscale_d ) ^ (3.0 / 2.0)
-    md = md / r ^ 3.0
-    return md
+    tmp_md = mass_d_enc * (tmp_r * tmp_r + rscale_d * rscale_d ) ^ (3.0 / 2.0)
+    tmp_md = tmp_md / tmp_r ^ 3.0
+    return tmp_md
 end
 
 function get_timestep()
@@ -173,10 +173,11 @@ function makeBodies(ctx, potential)
         print("placing dwarf at origin")
         finalPosition, finalVelocity = Vector.create(0, 0, 0), Vector.create(0, 0, 0)
     else 
+        print(r)
         finalPosition, finalVelocity = reverseOrbit{
             potential = potential,
-            position  = lbrToCartesian(ctx, Vector.create(l, b, r)),
-            velocity  = Vector.create(vx, vy, vz),
+            position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
+            velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
             tstop     = revOrbTime,
             dt        = ctx.timestep / 10.0
             }
@@ -185,8 +186,8 @@ function makeBodies(ctx, potential)
     if(print_reverse_orbit == true) then
         local placeholderPos, placeholderVel = PrintReverseOrbit{
             potential = potential,
-            position  = lbrToCartesian(ctx, Vector.create(l, b, r)),
-            velocity  = Vector.create(vx, vy, vz),
+            position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
+            velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
             tstop     = .14,
             tstopf    = .20,
             dt        = ctx.timestep / 10.0
@@ -261,22 +262,22 @@ rev_ratio        = round( tonumber(arg[2]), dec )
 rscale_l         = round( tonumber(arg[3]), dec )
 light_r_ratio    = round( tonumber(arg[4]), dec )
 mass_l           = round( tonumber(arg[5]), dec )
--- light_mass_ratio = round( tonumber(arg[6]), dec )
-mass_d_enc       = round( tonumber(arg[6]), dec )
+light_mass_ratio = round( tonumber(arg[6]), dec )
+-- mass_d_enc       = round( tonumber(arg[6]), dec )
 
 -- -- -- -- -- -- -- -- -- DWARF PARAMETERS   -- -- -- -- -- -- -- --
--- revOrbTime = evolveTime
--- dwarfMass = mass_l / light_mass_ratio
--- rscale_t  = rscale_l / light_r_ratio
--- rscale_d  = rscale_t *  (1.0 - light_r_ratio)
--- mass_d    = dwarfMass * (1.0 - light_mass_ratio)
-
 revOrbTime = evolveTime
+dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
-mass_d    = get_md()
+mass_d    = dwarfMass * (1.0 - light_mass_ratio)
 
--- rscale_d  = get_rscale()
+-- revOrbTime = evolveTime
+-- rscale_t  = rscale_l / light_r_ratio
+-- rscale_d  = rscale_t *  (1.0 - light_r_ratio)
+-- mass_d    = get_md()
+-- 
+-- -- rscale_d  = get_rscale()
 
 
 if(use_tree_code) then
