@@ -17,9 +17,9 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 10   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
-nbodyMinVersion       = "1.64"  -- -- MINIMUM APP VERSION        -- --
+nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
 run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
@@ -49,7 +49,7 @@ use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = true   -- -- control number of steps    -- --
+timestep_control     = false   -- -- control number of steps    -- --
 Ntime_steps          = 0    -- -- number of timesteps to run -- --
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
@@ -76,44 +76,6 @@ function makePotential()
    end
 end
 
-
-function get_rscale()
-    tmp_r = 0.001
-    cutoff = mass_l / 2.0
-    while true do
-        tmp_mass_enc_l = mass_l * tmp_r ^ 3.0 / (tmp_r * tmp_r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
-        
-        if(tmp_mass_enc_l >= cutoff) then
-            break
-        else
-            tmp_r = tmp_r + 0.001
-        end
-    end
-    print( 'MASSENCL = ', tmp_mass_enc_l)
-    tmp_mr = (mass_d_enc / mass_d) ^ (2.0 / 3.0)
-    tmp_rs = (tmp_r * tmp_r) * ( 1.0 - tmp_mr) / tmp_mr
-    tmp_rs = tmp_rs ^ (1.0 / 2.0)
-    return tmp_rs
-end
-
-function get_md()
-    tmp_r = 0.001
-    cutoff = mass_l / 2.0
-    while true do
-        tmp_mass_enc_l = mass_l * tmp_r ^ 3.0 / (tmp_r * tmp_r + rscale_l * rscale_l ) ^ (3.0 / 2.0)
-        
-        if(tmp_mass_enc_l >= cutoff) then
-            break
-        else
-            tmp_r = tmp_r + 0.001
-        end
-    end
-    print( 'MASSENCL = ', tmp_mass_enc_l)
-    
-    tmp_md = mass_d_enc * (tmp_r * tmp_r + rscale_d * rscale_d ) ^ (3.0 / 2.0)
-    tmp_md = tmp_md / tmp_r ^ 3.0
-    return tmp_md
-end
 
 function get_timestep()
     if(two_component_model == true) then
@@ -163,8 +125,7 @@ function makeContext()
    }
 end
 
--- soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
--- print('soften_length ', calculateEps2(totalBodies, soften_length ))
+
 
 function makeBodies(ctx, potential)
   local firstModel
@@ -173,7 +134,7 @@ function makeBodies(ctx, potential)
         print("placing dwarf at origin")
         finalPosition, finalVelocity = Vector.create(0, 0, 0), Vector.create(0, 0, 0)
     else 
-        print(r)
+        print('orbit_parameter_r', orbit_parameter_r)
         finalPosition, finalVelocity = reverseOrbit{
             potential = potential,
             position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
@@ -246,7 +207,8 @@ end
 arg = { ... } -- -- TAKING USER INPUT
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed") -- STILL EXPECTING SEED AS INPUT FOR THE FUTURE
-argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE
+-- argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE
+argSeed = 7854614814 -- -- SETTING SEED TO FIXED VALUE
 prng = DSFMT.create(argSeed)
 
 -- -- -- -- -- -- -- -- -- ROUNDING USER INPUT -- -- -- -- -- -- -- --
@@ -286,7 +248,9 @@ if(use_tree_code) then
 else
     criterion = "Exact"
 end
-
+soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
+print('soften_length ', calculateEps2(totalBodies, soften_length ))
+print('timestep', get_timestep())
 
 if(print_out_parameters) then
     print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
