@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 10   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -25,10 +25,8 @@ run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = false    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-
-
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- PARAMETER SETTINGS   -- -- -- -- -- -- -- -- -- --
@@ -45,12 +43,28 @@ bta_upper_range = 15      -- upper range for beta
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
-use_best_likelihood  = true    -- use the best likelihood return code
+use_best_likelihood  = false    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 0    -- -- number of timesteps to run -- --
+timestep_control     = true   -- -- control number of steps    -- --
+Ntime_steps          = 50    -- -- number of timesteps to run -- --
+
+
+
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+-- -- -- -- -- -- -- -- -- ADVANCED DEVELOPER OPTIONS -- -- -- -- -- -- -- --        
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+-- -- -- -- -- -- These options only work if you compile nbody with  -- -- --
+-- -- -- -- -- -- the -DNBODY_DEV_OPTIONS set to on                  -- -- --   
+
+useMultiOutputs       = true    -- -- WRITE MULTIPLE OUTPUTS       -- --
+freqOfOutputs         = 6       -- -- FREQUENCY OF WRITING OUTPUTS -- --
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+        
+
+
+
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
 orbit_parameter_l  = 218
@@ -121,6 +135,8 @@ function makeContext()
       BestLikeStart = best_like_start,
       Nstep_control = timestep_control,
       Ntsteps       = Ntime_steps,
+      MultiOutput   = useMultiOutputs,
+      OutputFreq    = freqOfOutputs,
       theta       = 1.0
    }
 end
@@ -134,7 +150,6 @@ function makeBodies(ctx, potential)
         print("placing dwarf at origin")
         finalPosition, finalVelocity = Vector.create(0, 0, 0), Vector.create(0, 0, 0)
     else 
-        print('orbit_parameter_r', orbit_parameter_r)
         finalPosition, finalVelocity = reverseOrbit{
             potential = potential,
             position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
@@ -248,9 +263,6 @@ if(use_tree_code) then
 else
     criterion = "Exact"
 end
-soften_length = (mass_l * rscale_l + mass_d  * rscale_d) / (mass_d + mass_l)
-print('soften_length ', calculateEps2(totalBodies, soften_length ))
-print('timestep', get_timestep())
 
 if(print_out_parameters) then
     print('forward time=', evolveTime, '\nrev time=',  revOrbTime)
