@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 2000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -43,12 +43,12 @@ bta_upper_range = 15      -- upper range for beta
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
-use_best_likelihood  = false    -- use the best likelihood return code
+use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = true   -- -- control number of steps    -- --
-Ntime_steps          = 50    -- -- number of timesteps to run -- --
+timestep_control     = false   -- -- control number of steps    -- --
+Ntime_steps          = 10    -- -- number of timesteps to run -- --
 
 
 
@@ -157,6 +157,27 @@ function makeBodies(ctx, potential)
             tstop     = revOrbTime,
             dt        = ctx.timestep / 10.0
             }
+            
+            finalPosition2, finalVelocity2 = reverseOrbit{
+            potential = potential,
+            position  = lbrToCartesian(ctx, Vector.create(100, 40, 32)),
+            velocity  = Vector.create(-40, 30, 160),
+            tstop     = revOrbTime,
+            dt        = ctx.timestep / 10.0
+            }
+            
+            
+            finalPosition3, finalVelocity3 = reverseOrbit{
+            potential = potential,
+            position  = lbrToCartesian(ctx, Vector.create(50, 20, 42)),
+            velocity  = Vector.create(-10, 70, 130),
+            tstop     = revOrbTime,
+            dt        = ctx.timestep / 10.0
+            }
+            
+            
+            
+            
     end
     
     if(print_reverse_orbit == true) then
@@ -175,7 +196,7 @@ function makeBodies(ctx, potential)
   
     if(two_component_model) then 
         firstModel = predefinedModels.mixeddwarf{
-            nbody       = totalBodies,
+            nbody       = 2000,
             prng        = prng,
             position    = finalPosition,
             velocity    = finalVelocity,
@@ -184,9 +205,31 @@ function makeBodies(ctx, potential)
             ignore      = true
         }
         
+--         secondModel = predefinedModels.mixeddwarf{
+--             nbody       = 2000,
+--             prng        = prng,
+--             position    = finalPosition2,
+--             velocity    = finalVelocity2,
+--             comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l}, -- Dwarf Options: plummer, nfw, general_hernquist
+--             comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d}, -- Dwarf Options: plummer, nfw, general_hernquist
+--             ignore      = true
+--         }
+--         
+--         
+--         thirdModel = predefinedModels.mixeddwarf{
+--             nbody       = 2000,
+--             prng        = prng,
+--             position    = finalPosition3,
+--             velocity    = finalVelocity3,
+--             comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l}, -- Dwarf Options: plummer, nfw, general_hernquist
+--             comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d}, -- Dwarf Options: plummer, nfw, general_hernquist
+--             ignore      = true
+--         }
+--         
+        
     else
         firstModel = predefinedModels.plummer{
-            nbody       = totalBodies,
+            nbody       = 2000,
             prng        = prng,
             position    = finalPosition,
             velocity    = finalVelocity,
