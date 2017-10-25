@@ -176,7 +176,7 @@ function makeBodies(ctx, potential)
   
     if(two_component_model) then 
         firstModel = predefinedModels.mixeddwarf{
-            nbody       = 2000,
+            nbody       = totalBodies,
             prng        = prng,
             position    = finalPosition,
             velocity    = finalVelocity,
@@ -185,7 +185,12 @@ function makeBodies(ctx, potential)
             ignore      = true
         }
         
-       
+        secondModel = predefinedModels.manual_bodies{
+        body_file   = file,
+    }
+        
+        
+        
     else
         firstModel = predefinedModels.plummer{
             nbody       = 2000,
@@ -199,7 +204,7 @@ function makeBodies(ctx, potential)
   
     end
   
-  return firstModel
+  return firstModel, secondModel
 end
 
 function makeHistogram()
@@ -242,7 +247,7 @@ rscale_l         = round( tonumber(arg[3]), dec )
 light_r_ratio    = round( tonumber(arg[4]), dec )
 mass_l           = round( tonumber(arg[5]), dec )
 light_mass_ratio = round( tonumber(arg[6]), dec )
--- mass_d_enc       = round( tonumber(arg[6]), dec )
+file             = arg[7]
 
 -- -- -- -- -- -- -- -- -- DWARF PARAMETERS   -- -- -- -- -- -- -- --
 revOrbTime = evolveTime
@@ -250,13 +255,6 @@ dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
-
--- revOrbTime = evolveTime
--- rscale_t  = rscale_l / light_r_ratio
--- rscale_d  = rscale_t *  (1.0 - light_r_ratio)
--- mass_d    = get_md()
--- 
--- -- rscale_d  = get_rscale()
 
 
 if(use_tree_code) then
