@@ -227,7 +227,7 @@ end
 
 
 arg = { ... } -- -- TAKING USER INPUT
-assert(#arg == 6, "Expected 6 arguments")
+assert(#arg == 7, "Expected 7 arguments")
 assert(argSeed ~= nil, "Expected seed") -- STILL EXPECTING SEED AS INPUT FOR THE FUTURE
 -- argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE
 argSeed = 7854614814 -- -- SETTING SEED TO FIXED VALUE
