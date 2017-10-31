@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 2000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -58,7 +58,7 @@ Ntime_steps          = 10    -- -- number of timesteps to run -- --
 -- -- -- -- -- -- These options only work if you compile nbody with  -- -- --
 -- -- -- -- -- -- the -DNBODY_DEV_OPTIONS set to on                  -- -- --   
 
-useMultiOutputs       = true    -- -- WRITE MULTIPLE OUTPUTS       -- --
+useMultiOutputs       = false   -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 6       -- -- FREQUENCY OF WRITING OUTPUTS -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
@@ -176,7 +176,7 @@ function makeBodies(ctx, potential)
   
     if(two_component_model) then 
         firstModel = predefinedModels.mixeddwarf{
-            nbody       = 2000,
+            nbody       = totalBodies,
             prng        = prng,
             position    = finalPosition,
             velocity    = finalVelocity,
@@ -188,7 +188,7 @@ function makeBodies(ctx, potential)
        
     else
         firstModel = predefinedModels.plummer{
-            nbody       = 2000,
+            nbody       = totalBodies,
             prng        = prng,
             position    = finalPosition,
             velocity    = finalVelocity,

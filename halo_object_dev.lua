@@ -187,13 +187,13 @@ function makeBodies(ctx, potential)
         
         secondModel = predefinedModels.manual_bodies{
         body_file   = file,
-    }
+        }
         
         
         
     else
         firstModel = predefinedModels.plummer{
-            nbody       = 2000,
+            nbody       = totalBodies,
             prng        = prng,
             position    = finalPosition,
             velocity    = finalVelocity,

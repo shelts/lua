@@ -41,11 +41,11 @@ bta_upper_range = 15      -- upper range for beta
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
-use_best_likelihood  = false    -- use the best likelihood return code
+use_best_likelihood  = false   -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
-timestep_control     = true -- -- control number of steps    -- --
+timestep_control     = false -- -- control number of steps    -- --
 Ntime_steps          = 10    -- -- number of timesteps to run -- --
 
 
@@ -55,7 +55,7 @@ Ntime_steps          = 10    -- -- number of timesteps to run -- --
 -- -- -- -- -- -- These options only work if you compile nbody with  -- -- --
 -- -- -- -- -- -- the -DNBODY_DEV_OPTIONS set to on                  -- -- --   
 
-useMultiOutputs       = true    -- -- WRITE MULTIPLE OUTPUTS       -- --
+useMultiOutputs       = false   -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 1       -- -- FREQUENCY OF WRITING OUTPUTS -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
