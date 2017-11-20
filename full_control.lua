@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -157,7 +157,6 @@ function makeBodies(ctx, potential)
             tstop     = revOrbTime,
             dt        = ctx.timestep / 10.0
             }
-            
     end
     
     if(print_reverse_orbit == true) then
@@ -184,7 +183,6 @@ function makeBodies(ctx, potential)
             comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d}, -- Dwarf Options: plummer, nfw, general_hernquist
             ignore      = true
         }
-        
        
     else
         firstModel = predefinedModels.plummer{
@@ -242,7 +240,6 @@ rscale_l         = round( tonumber(arg[3]), dec )
 light_r_ratio    = round( tonumber(arg[4]), dec )
 mass_l           = round( tonumber(arg[5]), dec )
 light_mass_ratio = round( tonumber(arg[6]), dec )
--- mass_d_enc       = round( tonumber(arg[6]), dec )
 
 -- -- -- -- -- -- -- -- -- DWARF PARAMETERS   -- -- -- -- -- -- -- --
 revOrbTime = evolveTime
@@ -250,14 +247,6 @@ dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
 mass_d    = dwarfMass * (1.0 - light_mass_ratio)
-
--- revOrbTime = evolveTime
--- rscale_t  = rscale_l / light_r_ratio
--- rscale_d  = rscale_t *  (1.0 - light_r_ratio)
--- mass_d    = get_md()
--- 
--- -- rscale_d  = get_rscale()
-
 
 if(use_tree_code) then
     criterion = "TreeCode"
