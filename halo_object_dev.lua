@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 2000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -48,7 +48,7 @@ best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
 timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 10    -- -- number of timesteps to run -- --
+Ntime_steps          = 2    -- -- number of timesteps to run -- --
 
 
 
@@ -59,7 +59,7 @@ Ntime_steps          = 10    -- -- number of timesteps to run -- --
 -- -- -- -- -- -- the -DNBODY_DEV_OPTIONS set to on                  -- -- --   
 
 useMultiOutputs       = true    -- -- WRITE MULTIPLE OUTPUTS       -- --
-freqOfOutputs         = 6       -- -- FREQUENCY OF WRITING OUTPUTS -- --
+freqOfOutputs         = 1       -- -- FREQUENCY OF WRITING OUTPUTS -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
 
@@ -118,6 +118,7 @@ function get_timestep()
         t = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_l)) / (mass_l))
     end
 --     print(t)
+    t = 1e-4
     return t
 end
 
@@ -127,7 +128,7 @@ function makeContext()
    return NBodyCtx.create{
       timeEvolve  = evolveTime,
       timestep    = get_timestep(),
-      eps2        = calculateEps2(totalBodies, soften_length ),
+      eps2        = 1e-3,
       criterion   = criterion,
       useQuad     = true,
       useBestLike = use_best_likelihood,
@@ -186,9 +187,27 @@ function makeBodies(ctx, potential)
         }
         
         secondModel = predefinedModels.manual_bodies{
-        body_file   = file,
+            body_file   = file
         }
-        
+
+
+            finalPosition2, finalVelocity2 = reverseOrbit{
+            potential = potential,
+            position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
+            velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
+            tstop     = 7.0,
+            dt        = ctx.timestep / 10.0
+            }
+            
+        thirdModel = predefinedModels.mixeddwarf{
+            nbody       = totalBodies,
+            prng        = prng,
+            position    = finalPosition2,
+            velocity    = finalVelocity2,
+            comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l}, -- Dwarf Options: plummer, nfw, general_hernquist
+            comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d}, -- Dwarf Options: plummer, nfw, general_hernquist
+            ignore      = true
+        }
         
         
     else

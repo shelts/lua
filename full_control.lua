@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -25,7 +25,7 @@ run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = false    -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -48,7 +48,7 @@ best_like_start      = 0.98    -- what percent of sim to start
 use_vel_disps        = true    -- use velocity dispersions in likelihood
         
 timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 10    -- -- number of timesteps to run -- --
+Ntime_steps          = 0    -- -- number of timesteps to run -- --
 
 
 
@@ -142,7 +142,6 @@ function makeContext()
 end
 
 
-
 function makeBodies(ctx, potential)
   local firstModel
   local finalPosition, finalVelocity
@@ -223,7 +222,7 @@ arg = { ... } -- -- TAKING USER INPUT
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed") -- STILL EXPECTING SEED AS INPUT FOR THE FUTURE
 -- argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE
-argSeed = 7854614814 -- -- SETTING SEED TO FIXED VALUE
+argSeed = 7854614814 -- -- SETTING SEED TO FIXED VALUE Seed used for mw@home
 prng = DSFMT.create(argSeed)
 
 -- -- -- -- -- -- -- -- -- ROUNDING USER INPUT -- -- -- -- -- -- -- --

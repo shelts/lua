@@ -55,7 +55,7 @@ Ntime_steps          = 10    -- -- number of timesteps to run -- --
 -- -- -- -- -- -- These options only work if you compile nbody with  -- -- --
 -- -- -- -- -- -- the -DNBODY_DEV_OPTIONS set to on                  -- -- --   
 
-useMultiOutputs       = false   -- -- WRITE MULTIPLE OUTPUTS       -- --
+useMultiOutputs       = true   -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 1       -- -- FREQUENCY OF WRITING OUTPUTS -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
