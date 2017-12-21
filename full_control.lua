@@ -33,9 +33,9 @@ print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- -- -- -- -- -- -- -- -- HISTOGRAM   -- -- -- -- -- -- -- -- -- -- -- -- --
-lda_bins        = 50      -- number of bins in lamdba direction
-lda_lower_range = -150    -- lower range for lambda
-lda_upper_range = 150     -- upepr range for lamdba
+lda_bins        = 22      -- number of bins in lamdba direction
+lda_lower_range = -36.764705882352942    -- lower range for lambda
+lda_upper_range = 36.764705882352942     -- upepr range for lamdba
 
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
