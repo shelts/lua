@@ -25,7 +25,7 @@ run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = false    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -33,9 +33,11 @@ print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- -- -- -- -- -- -- -- -- HISTOGRAM   -- -- -- -- -- -- -- -- -- -- -- -- --
-lda_bins        = 22      -- number of bins in lamdba direction
-lda_lower_range = -36.764705882352942    -- lower range for lambda
-lda_upper_range = 36.764705882352942     -- upepr range for lamdba
+lda_bins        = 50      -- number of bins in lamdba direction
+lda_lower_range = -150    -- lower range for lambda
+lda_upper_range = 150     -- upepr range for lamdba
+-- lda_lower_range = -36.764705882352942    -- lower range for lambda
+-- lda_upper_range = 36.764705882352942     -- upepr range for lamdba
 
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
@@ -45,11 +47,14 @@ bta_upper_range = 15      -- upper range for beta
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
 use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
-use_vel_disps        = true    -- use velocity dispersions in likelihood
+use_beta_disps       = true    -- use beta dispersions in likelihood
+use_vel_disps        = true   -- use velocity dispersions in likelihood
         
 timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 0    -- -- number of timesteps to run -- --
+Ntime_steps          = 0       -- -- number of timesteps to run -- --
 
+SigmaCutoff          = 2.5     -- -- sigma cutoff for outlier rejection -- --
+Correction           = 2.111   -- -- correction for outlier rejection -- --
 
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -130,13 +135,18 @@ function makeContext()
       eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = criterion,
       useQuad     = true,
-      useBestLike = use_best_likelihood,
-      useVelDisp  = use_vel_disps,
+      useBestLike   = use_best_likelihood,
       BestLikeStart = best_like_start,
+      useBetaDisp   = use_beta_disps,
+      useVelDisp    = use_vel_disps,
       Nstep_control = timestep_control,
       Ntsteps       = Ntime_steps,
       MultiOutput   = useMultiOutputs,
       OutputFreq    = freqOfOutputs,
+      BetaSigma     = SigmaCutoff,
+      VelSigma      = SigmaCutoff,
+      BetaCorrect   = Correction,
+      VelCorrect    = Correction,
       theta       = 1.0
    }
 end

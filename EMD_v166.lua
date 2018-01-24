@@ -28,8 +28,11 @@ bta_upper_range = 15      -- upper range for beta
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
 use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
-use_vel_disps        = true    -- use velocity dispersions in likelihood
-        
+use_beta_disps       = true    -- use beta dispersions in likelihood
+use_vel_disps        = false    -- use velocity dispersions in likelihood
+
+SigmaCutoff          = 2.5     -- -- sigma cutoff for outlier rejection -- --
+Correction           = 1.111   -- -- correction for outlier rejection -- --
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
 l  = 218
@@ -85,8 +88,13 @@ function makeContext()
       criterion   = "TreeCode",
       useQuad     = true,
       useBestLike = use_best_likelihood,
-      useVelDisp  = use_vel_disps,
+      useBetaDisp  = use_beta_disps,
+      useVelDisp   = use_vel_disps,
       BestLikeStart = best_like_start,
+      BetaSigma     = SigmaCutoff,
+      VelSigma      = SigmaCutoff,
+      BetaCorrect   = Correction,
+      VelCorrect    = Correction,
       theta       = 1.0
    }
 end
@@ -139,7 +147,7 @@ end
 arg = { ... } -- -- TAKING USER INPUT
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed") -- STILL EXPECTING SEED AS INPUT FOR THE FUTURE
--- argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE
+-- argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE used to make diffseed histogram
 argSeed = 7854614814 -- -- SETTING SEED TO FIXED VALUE
 prng = DSFMT.create(argSeed)
 
