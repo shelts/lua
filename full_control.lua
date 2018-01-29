@@ -17,7 +17,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 100   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
 
@@ -42,20 +42,17 @@ lda_upper_range = 150     -- upepr range for lamdba
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
 bta_upper_range = 15      -- upper range for beta
+
+SigmaCutoff          = 2.5     -- -- sigma cutoff for outlier rejection -- --
+Correction           = 2.111   -- -- correction for outlier rejection -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
 use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
+
 use_beta_disps       = true    -- use beta dispersions in likelihood
-use_vel_disps        = true   -- use velocity dispersions in likelihood
-        
-timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 0       -- -- number of timesteps to run -- --
-
-SigmaCutoff          = 2.5     -- -- sigma cutoff for outlier rejection -- --
-Correction           = 2.111   -- -- correction for outlier rejection -- --
-
+use_vel_disps        = false   -- use velocity dispersions in likelihood
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- ADVANCED DEVELOPER OPTIONS -- -- -- -- -- -- -- --        
@@ -65,6 +62,9 @@ Correction           = 2.111   -- -- correction for outlier rejection -- --
 
 useMultiOutputs       = false   -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 6       -- -- FREQUENCY OF WRITING OUTPUTS -- --
+
+timestep_control     = false    -- -- control number of steps      -- --
+Ntime_steps          = 0        -- -- number of timesteps to run   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
 
