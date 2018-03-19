@@ -17,15 +17,16 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 2000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
-nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
+nbodyMinVersion       = "1.68"  -- -- MINIMUM APP VERSION        -- --
 
 run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
-two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
+two_component_model   = false    -- -- TWO COMPONENTS SWITCH      -- --
+
+
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
-print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = false    -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -40,17 +41,17 @@ lda_upper_range = 150     -- upepr range for lamdba
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
 bta_upper_range = 15      -- upper range for beta
+
+SigmaCutoff          = 2.5     -- -- sigma cutoff for outlier rejection -- --
+Correction           = 1.111   -- -- correction for outlier rejection -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
-use_best_likelihood  = true    -- use the best likelihood return code
+use_best_likelihood  = false    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
-use_vel_disps        = true    -- use velocity dispersions in likelihood
-        
-timestep_control     = false   -- -- control number of steps    -- --
-Ntime_steps          = 2    -- -- number of timesteps to run -- --
 
-
+use_beta_disps       = false    -- use beta dispersions in likelihood
+use_vel_disps        = false   -- use velocity dispersions in likelihood
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- ADVANCED DEVELOPER OPTIONS -- -- -- -- -- -- -- --        
@@ -58,8 +59,11 @@ Ntime_steps          = 2    -- -- number of timesteps to run -- --
 -- -- -- -- -- -- These options only work if you compile nbody with  -- -- --
 -- -- -- -- -- -- the -DNBODY_DEV_OPTIONS set to on                  -- -- --   
 
-useMultiOutputs       = true    -- -- WRITE MULTIPLE OUTPUTS       -- --
-freqOfOutputs         = 1       -- -- FREQUENCY OF WRITING OUTPUTS -- --
+useMultiOutputs       = false   -- -- WRITE MULTIPLE OUTPUTS       -- --
+freqOfOutputs         = 200       -- -- FREQUENCY OF WRITING OUTPUTS -- --
+
+timestep_control     = false    -- -- control number of steps      -- --
+Ntime_steps          = 0        -- -- number of timesteps to run   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
 
@@ -128,16 +132,21 @@ function makeContext()
    return NBodyCtx.create{
       timeEvolve  = evolveTime,
       timestep    = get_timestep(),
-      eps2        = 1e-3,
+      eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = criterion,
       useQuad     = true,
-      useBestLike = use_best_likelihood,
-      useVelDisp  = use_vel_disps,
+      useBestLike   = use_best_likelihood,
       BestLikeStart = best_like_start,
+      useBetaDisp   = use_beta_disps,
+      useVelDisp    = use_vel_disps,
       Nstep_control = timestep_control,
       Ntsteps       = Ntime_steps,
       MultiOutput   = useMultiOutputs,
       OutputFreq    = freqOfOutputs,
+      BetaSigma     = SigmaCutoff,
+      VelSigma      = SigmaCutoff,
+      BetaCorrect   = Correction,
+      VelCorrect    = Correction,
       theta       = 1.0
    }
 end
@@ -161,19 +170,6 @@ function makeBodies(ctx, potential)
             
     end
     
-    if(print_reverse_orbit == true) then
-        local placeholderPos, placeholderVel = PrintReverseOrbit{
-            potential = potential,
-            position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
-            velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
-            tstop     = .14,
-            tstopf    = .20,
-            dt        = ctx.timestep / 10.0
-        }
-        print('Printing reverse orbit')
-    end
-    
-
   
     if(two_component_model) then 
         firstModel = predefinedModels.mixeddwarf{
@@ -191,25 +187,7 @@ function makeBodies(ctx, potential)
         }
 
 
-            finalPosition2, finalVelocity2 = reverseOrbit{
-            potential = potential,
-            position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
-            velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
-            tstop     = 7.0,
-            dt        = ctx.timestep / 10.0
-            }
-            
-        thirdModel = predefinedModels.mixeddwarf{
-            nbody       = totalBodies,
-            prng        = prng,
-            position    = finalPosition2,
-            velocity    = finalVelocity2,
-            comp1       = Dwarf.plummer{mass = mass_l, scaleLength = rscale_l}, -- Dwarf Options: plummer, nfw, general_hernquist
-            comp2       = Dwarf.plummer{mass = mass_d, scaleLength = rscale_d}, -- Dwarf Options: plummer, nfw, general_hernquist
-            ignore      = true
-        }
-        
-        
+                  
     else
         firstModel = predefinedModels.plummer{
             nbody       = totalBodies,
@@ -219,6 +197,10 @@ function makeBodies(ctx, potential)
             mass        = mass_l,
             scaleRadius = rscale_l,
             ignore      = false
+        }
+        
+        secondModel = predefinedModels.manual_bodies{
+            body_file   = file
         }
   
     end

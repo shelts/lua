@@ -19,7 +19,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 totalBodies           = 2000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
-nbodyMinVersion       = "1.66"  -- -- MINIMUM APP VERSION        -- --
+nbodyMinVersion       = "1.68"  -- -- MINIMUM APP VERSION        -- --
 
 run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 two_component_model   = true    -- -- TWO COMPONENTS SWITCH      -- --
@@ -33,11 +33,11 @@ print_out_parameters  = false    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- -- -- -- -- -- -- -- -- HISTOGRAM   -- -- -- -- -- -- -- -- -- -- -- -- --
-lda_bins        = 50      -- number of bins in lamdba direction
-lda_lower_range = -150    -- lower range for lambda
-lda_upper_range = 150     -- upepr range for lamdba
--- lda_lower_range = -36.764705882352942    -- lower range for lambda
--- lda_upper_range = 36.764705882352942     -- upepr range for lamdba
+lda_bins        = 26      -- number of bins in lamdba direction
+-- lda_lower_range = -150    -- lower range for lambda
+-- lda_upper_range = 150     -- upepr range for lamdba
+lda_lower_range = -38.235294117647058    -- lower range for lambda
+lda_upper_range = 38.235294117647058     -- upepr range for lamdba
 
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
@@ -52,7 +52,7 @@ use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
 
 use_beta_disps       = true    -- use beta dispersions in likelihood
-use_vel_disps        = true   -- use velocity dispersions in likelihood
+use_vel_disps        = false   -- use velocity dispersions in likelihood
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- ADVANCED DEVELOPER OPTIONS -- -- -- -- -- -- -- --        
@@ -64,7 +64,7 @@ useMultiOutputs       = false   -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 6       -- -- FREQUENCY OF WRITING OUTPUTS -- --
 
 timestep_control     = false    -- -- control number of steps      -- --
-Ntime_steps          = 0        -- -- number of timesteps to run   -- --
+Ntime_steps          = 1        -- -- number of timesteps to run   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
 
@@ -122,7 +122,7 @@ function get_timestep()
     else 
         t = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_l)) / (mass_l))
     end
---     print(t)
+--     print("LUA FILE: ", t)
     return t
 end
 
@@ -154,7 +154,7 @@ end
 
 function makeBodies(ctx, potential)
   local firstModel
-  local finalPosition, finalVelocity
+  local finalPosition, finalVelocity, finalPosition2, finalVelocity2
     if(run_null_potential == true) then
         print("placing dwarf at origin")
         finalPosition, finalVelocity = Vector.create(0, 0, 0), Vector.create(0, 0, 0)
@@ -166,6 +166,16 @@ function makeBodies(ctx, potential)
             tstop     = revOrbTime,
             dt        = ctx.timestep / 10.0
             }
+            
+--         finalPosition2, finalVelocity2 = reverseOrbit2{
+--             potential = potential,
+--             position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
+--             velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
+--             tstop     = revOrbTime,
+--             dt        = ctx.timestep / 10.0
+--             }
+--         print(finalPosition, finalVelocity)
+--         print(finalPosition2, finalVelocity2)
     end
     
     if(print_reverse_orbit == true) then
