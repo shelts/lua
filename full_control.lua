@@ -18,14 +18,14 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.68"  -- -- MINIMUM APP VERSION        -- --
 
-run_null_potential    = true   -- -- NULL POTENTIAL SWITCH      -- --
+run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
 print_reverse_orbit   = false   -- -- PRINT REVERSE ORBIT SWITCH -- --
-print_out_parameters  = true    -- -- PRINT OUT ALL PARAMETERS   -- --
+print_out_parameters  = false    -- -- PRINT OUT ALL PARAMETERS   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 
@@ -79,7 +79,7 @@ use_vel_disps        = false   -- use velocity dispersions in likelihood
 useMultiOutputs       = false    -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 6        -- -- FREQUENCY OF WRITING OUTPUTS -- --
 
-timestep_control     = true     -- -- control number of steps      -- --
+timestep_control     = false     -- -- control number of steps      -- --
 Ntime_steps          = 0        -- -- number of timesteps to run   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
