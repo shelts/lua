@@ -18,7 +18,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 2   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.68"  -- -- MINIMUM APP VERSION        -- --
 
@@ -79,7 +79,7 @@ use_vel_disps        = false   -- use velocity dispersions in likelihood
 useMultiOutputs       = false    -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 6        -- -- FREQUENCY OF WRITING OUTPUTS -- --
 
-timestep_control     = false     -- -- control number of steps      -- --
+timestep_control     = true     -- -- control number of steps      -- --
 Ntime_steps          = 0        -- -- number of timesteps to run   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
