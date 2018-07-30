@@ -18,7 +18,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 2   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.68"  -- -- MINIMUM APP VERSION        -- --
 
@@ -79,7 +79,7 @@ use_vel_disps        = false   -- use velocity dispersions in likelihood
 useMultiOutputs       = false    -- -- WRITE MULTIPLE OUTPUTS       -- --
 freqOfOutputs         = 6        -- -- FREQUENCY OF WRITING OUTPUTS -- --
 
-timestep_control     = true     -- -- control number of steps      -- --
+timestep_control     = false     -- -- control number of steps      -- --
 Ntime_steps          = 0        -- -- number of timesteps to run   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
@@ -106,8 +106,8 @@ function makePotential()
         return  Potential.create{
             spherical = Spherical.spherical{ mass  = 1.52954402e5, scale = 0.7 },
             disk      = Disk.miyamotoNagai{ mass = 4.45865888e5, scaleLength = 6.5, scaleHeight = 0.26 },
-            halo      = Halo.logarithmic{ vhalo = 73, scaleLength = 12.0, flattenZ = 1.0 }
-        }
+            halo      = Halo.logarithmic{ vhalo = 74.61, scaleLength = 12.0, flattenZ = 1.0 }
+        }--vhalo = 74.61 kpc/gy = 73 km/s
    end
 end
 
@@ -148,7 +148,7 @@ function makeContext()
    return NBodyCtx.create{
       timeEvolve  = evolveTime,
       timestep    = get_timestep(),
-      eps2        = calculateEps2(totalBodies, soften_length ),
+      eps2        = 100 * calculateEps2(totalBodies, soften_length ),
       criterion   = criterion,
       useQuad     = true,
       useBestLike   = use_best_likelihood,
