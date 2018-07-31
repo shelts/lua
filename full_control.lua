@@ -20,7 +20,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
-nbodyMinVersion       = "1.68"  -- -- MINIMUM APP VERSION        -- --
+nbodyMinVersion       = "1.70"  -- -- MINIMUM APP VERSION        -- --
 
 run_null_potential    = false   -- -- NULL POTENTIAL SWITCH      -- --
 use_tree_code         = true    -- -- USE TREE CODE NOT EXACT    -- --
@@ -49,11 +49,12 @@ manual_bodies     = false    -- -- USE THE MANUAL BODY LIST   -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- -- -- -- -- -- -- -- -- HISTOGRAM   -- -- -- -- -- -- -- -- -- -- -- -- --
-lda_bins        = 24      -- number of bins in lamdba direction
--- lda_lower_range = -150    -- lower range for lambda
--- lda_upper_range = 150     -- upepr range for lamdba
-lda_lower_range = -36     -- lower range for lambda
-lda_upper_range = 36      -- upepr range for lamdba
+lda_bins        = 50      -- number of bins in lamdba direction
+lda_lower_range = -150    -- lower range for lambda
+lda_upper_range = 150     -- upepr range for lamdba
+-- lda_bins        = 24      -- number of bins in lamdba direction
+-- lda_lower_range = -36     -- lower range for lambda
+-- lda_upper_range = 36      -- upepr range for lamdba
 
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
