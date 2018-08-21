@@ -18,7 +18,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.70"  -- -- MINIMUM APP VERSION        -- --
 
@@ -150,7 +150,7 @@ function makeContext()
    return NBodyCtx.create{
       timeEvolve  = evolveTime,
       timestep    = get_timestep(),
-      eps2        = 100 * calculateEps2(totalBodies, soften_length ),
+      eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = criterion,
       useQuad     = true,
       useBestLike   = use_best_likelihood,
