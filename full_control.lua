@@ -18,7 +18,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 20000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.70"  -- -- MINIMUM APP VERSION        -- --
 
@@ -115,7 +115,7 @@ end
 
 
 function get_timestep()
-    if(two_component_model == true) then
+    if(ModelComponents == 2) then
         --Mass of a single dark matter sphere enclosed within light rscale
         mass_enc_d = mass_d * (rscale_l)^3 * ( (rscale_l)^2 + (rscale_d)^2  )^(-3.0/2.0)
 
@@ -133,14 +133,13 @@ function get_timestep()
         end
         
         -- I did it this way so there was only one place to change the time step. 
-        t = (1 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
+        t = (1.0 / 100.0) * ( pi_4_3 * s)^(1.0/2.0)
         
     --     tmp = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_d)) / (mass_l + mass_d))
     --     print('timestep ', t, tmp)
     else 
-        t = sqr(1/10.0) * sqrt((pi_4_3 * cube(rscale_l)) / (mass_l))
+        t = sqr(1.0 / 10.0) * sqrt((pi_4_3 * cube(rscale_l)) / (mass_l))
     end
---     print(t)
     return t
 end
 
