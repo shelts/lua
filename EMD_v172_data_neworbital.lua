@@ -16,9 +16,6 @@ nbodyMinVersion       = "1.72"  -- -- MINIMUM APP VERSION        -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- -- -- -- -- -- -- -- -- HISTOGRAM   -- -- -- -- -- -- -- -- -- -- -- -- --
--- lda_bins        = 50      -- number of bins in lamdba direction
--- lda_lower_range = -150    -- lower range for lambda
--- lda_upper_range = 150     -- upepr range for lamdba
 lda_bins        = 24      -- number of bins in lamdba direction
 lda_lower_range = -36    -- lower range for lambda
 lda_upper_range = 36     -- upepr range for lamdba
@@ -34,19 +31,12 @@ Correction           = 1.111   -- -- correction for outlier rejection   DO NOT C
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
 use_best_likelihood  = true    -- use the best likelihood return code
-best_like_start      = 0.98    -- what percent of sim to start
+best_like_start      = 0.95    -- what percent of sim to start
 
 use_beta_disps       = true    -- use beta dispersions in likelihood
 use_vel_disps        = false   -- use velocity dispersions in likelihood
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
--- orbit_parameter_l  = 218
--- orbit_parameter_b  = 53.5
--- orbit_parameter_r  = 28.6
--- orbit_parameter_vx = -156 
--- orbit_parameter_vy = 79 
--- orbit_parameter_vz = 107
-
 orbit_parameter_l  = 250.0
 orbit_parameter_b  = 48.6
 orbit_parameter_r  = 22.6
@@ -54,7 +44,6 @@ orbit_parameter_r  = 22.6
 orbit_parameter_vx = 182.9
 orbit_parameter_vy = -63.4
 orbit_parameter_vz = -140.6
-
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 function makePotential()
@@ -162,12 +151,9 @@ end
 arg = { ... } -- -- TAKING USER INPUT
 assert(#arg == 6, "Expected 6 arguments")
 assert(argSeed ~= nil, "Expected seed") -- STILL EXPECTING SEED AS INPUT FOR THE FUTURE
--- argSeed = 34086709 -- -- SETTING SEED TO FIXED VALUE used to make diffseed histogram
 -- argSeed = 785461.0 -- -- SETTING SEED TO FIXED VALUE
 -- argSeed = 234251.0 -- -- SETTING SEED TO FIXED VALUE
--- argSeed = 357159.0 -- -- SETTING SEED TO FIXED VALUE FOR MWH
 argSeed = 25398.0 -- -- SETTING SEED TO FIXED VALUE FOR MWH
-
 prng = DSFMT.create(argSeed)
 
 -- -- -- -- -- -- -- -- -- ROUNDING USER INPUT -- -- -- -- -- -- -- --

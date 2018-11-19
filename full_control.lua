@@ -18,7 +18,7 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- STANDARD  SETTINGS   -- -- -- -- -- -- -- -- -- --        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-totalBodies           = 200   -- -- NUMBER OF BODIES           -- --
+totalBodies           = 2000   -- -- NUMBER OF BODIES           -- --
 nbodyLikelihoodMethod = "EMD"   -- -- HIST COMPARE METHOD        -- --
 nbodyMinVersion       = "1.72"  -- -- MINIMUM APP VERSION        -- --
 
@@ -90,12 +90,25 @@ Ntime_steps          = 0        -- -- number of timesteps to run   -- --
 
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
-orbit_parameter_l  = 218
-orbit_parameter_b  = 53.5
-orbit_parameter_r  = 28.6
-orbit_parameter_vx = -156 
-orbit_parameter_vy = 79 
-orbit_parameter_vz = 107
+-- orbit_parameter_l  = 218
+-- orbit_parameter_b  = 53.5
+-- orbit_parameter_r  = 28.6
+-- -- orbit_parameter_vx = -156 
+-- -- orbit_parameter_vy = 79 
+-- -- orbit_parameter_vz = 107
+-- 
+-- orbit_parameter_vx = -159.4 -- velocities converted from km/s to kpc/gy
+-- orbit_parameter_vy = 80.74
+-- orbit_parameter_vz = 109.4
+
+orbit_parameter_l  = 250.0
+orbit_parameter_b  = 48.6
+orbit_parameter_r  = 22.6
+
+orbit_parameter_vx = 182.9
+orbit_parameter_vy = -63.4
+orbit_parameter_vz = -140.6
+
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
         
 
@@ -153,7 +166,7 @@ function makeContext()
       criterion   = criterion,
       useQuad     = true,
       useBestLike   = use_best_likelihood,
-      BestLikeStart = best_like_start,
+      BestLikeStart = eff_best_like_start,
       useVelDisp    = use_vel_disps,
       useBetaDisp   = use_beta_disps,
       Nstep_control = timestep_control,
@@ -168,7 +181,6 @@ function makeContext()
       theta       = 1.0
    }
 end
-
 
 
 function makeBodies(ctx, potential)
@@ -192,8 +204,8 @@ function makeBodies(ctx, potential)
             potential = potential,
             position  = lbrToCartesian(ctx, Vector.create(orbit_parameter_l, orbit_parameter_b, orbit_parameter_r)),
             velocity  = Vector.create(orbit_parameter_vx, orbit_parameter_vy, orbit_parameter_vz),
-            tstop     = .14,
-            tstopf    = .20,
+            tstop     = .5,
+            tstopf    = .5,
             dt        = ctx.timestep / 10.0
         }
         print('Printing reverse orbit')
@@ -286,7 +298,11 @@ light_mass_ratio = round( tonumber(arg[6]), dec )
 manual_body_file = arg[7]
 
 -- -- -- -- -- -- -- -- -- DWARF PARAMETERS   -- -- -- -- -- -- -- --
-revOrbTime = evolveTime
+revOrbTime = evolveTime 
+eff_best_like_start = best_like_start
+-- revOrbTime = evolveTime * best_like_start
+-- eff_best_like_start = 2.0 * best_like_start - 1.0
+
 dwarfMass = mass_l / light_mass_ratio
 rscale_t  = rscale_l / light_r_ratio
 rscale_d  = rscale_t *  (1.0 - light_r_ratio)
